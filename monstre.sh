@@ -8,6 +8,7 @@ echo "Waiting for a key to be pressed..."
 
 rhythmbox-client --quit
 
+////https://ostechnix.com/zenity-create-gui-dialog-boxes-in-bash-scripts///
 LOGS=$(zenity --password --username)
 
 USERNAME=$(echo "$LOGS" | cut -d'|' -f1)
