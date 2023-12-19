@@ -20,7 +20,7 @@ int getch(void)
 
 int main(void){
 
-	char c=getch();
+    char c=getch();
 	
-	return 0;
+    return 0;
 }
