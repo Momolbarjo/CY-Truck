@@ -9,7 +9,7 @@ fi
 
 
 datafile=$1
-outputfile="temp/L/tmp.csv"
+outputfile="temp/l/tmp.csv"
 
 if [ -e "$outputfile" ]; then
     rm "$outputfile"
@@ -39,7 +39,7 @@ gnuplot <<- EOF
     set ylabel "DISTANCE (Km)" font ",10"
     set xlabel "ROUTE ID" font ",10"
     set term png  size 600,400
-    plot 'temp/L/tmp.csv' using 2:xtic(1) notitle with boxes
+    plot 'temp/l/tmp.csv' using 2:xtic(1) notitle with boxes
 EOF
 
 
