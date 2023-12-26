@@ -1,3 +1,3 @@
 17/12/2023 Debut du projet : mise en place des premieres idées : authentification avec identifiants , camion en ansi art, musique.
-21/12/2023 premier traitement réaliser , creation des dossiers necessaires.
+21/12/2023 premier traitement réalisé , creation des dossiers necessaires.
 26/12/2023 traitement d2 et L réalisés, creation des liens avec les autres dossiers.
