@@ -19,7 +19,7 @@ PASSWORD=$(echo "$LOGS" | cut -d'|' -f2)
 
 if [ "$USERNAME" = "admin" ] && [ "$PASSWORD" = "miaou" ]; then
 	zenity --info --title="Connexion réussie" --text="Bienvenue, chef."
-	chmod 777 script.sh
+	chmod 777 main_script.sh
 else
 	zenity --error --title="Echec de la connexion" --text="Nom d'utilisateur et/ou mot de passe incorrecte."
 	
