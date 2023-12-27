@@ -7,7 +7,7 @@ echo "Appuyer sur une touche.."
 sleep 1
 progc/./noEnter
 
-rhythmbox-client --quit
+rhythmbox-client --stop
 
 sleep 1
 
