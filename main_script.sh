@@ -13,13 +13,20 @@ fi
 
 declare -A options
 
-if [ "$#" -ge 2 ] && [ "$#" -lt 9 ] && [ "$1" = "data.csv" ]; then
+if [ "$#" -ge 2 ] && [ "$#" -lt 9 ] && [ "${1##*.}" = "csv" ]; then
+
+    if [ ! -f "data/$1" ]; then
+    	echo "Erreur : le fichier doit etre present dans le dossier data."
+    	exit 1
+    fi
+    
     datafile=$1
+    
     shift
     for opt in "$@"
     do
         if [ "$opt" = "-h" ]; then
-            echo "Usage: $0 data.csv parameters (-d1,-d2,-l,-s,-t,-r)"
+            echo "Usage: $0 .csv parameters (-d1,-d2,-l,-s,-t,-r)"
             exit 0
         fi
         if [ "${options[$opt]}" = "true" ]; then
@@ -44,7 +51,7 @@ if [ "$#" -ge 2 ] && [ "$#" -lt 9 ] && [ "$1" = "data.csv" ]; then
         esac
     done
 else
-    echo "Usage: $0 data.csv parametres (max 7)"
+    echo "Usage: $0 .csv parametres (max 7)"
     exit 1
 fi
 
