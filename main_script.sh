@@ -13,7 +13,7 @@ fi
 
 declare -A options
 
-if [ "$#" -ge 2 ] && [ "$#" -lt 9 ] && [ "${1##*.}" = "csv" ]; then
+if [ "$#" -ge 2 ] && [ "$#" -lt 9 ] && [ "${1##*.}" = "csv" ]; then # https://www.math-linux.com/linux/bash/article/comment-extraire-le-nom-et-l-extension-d-un-fichier-en-bash
 
     if [ ! -f "data/$1" ]; then
     	echo "Erreur : le fichier doit etre present dans le dossier data."
