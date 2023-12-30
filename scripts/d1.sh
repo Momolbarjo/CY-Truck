@@ -1,10 +1,10 @@
 #!/bin/bash
 
-start=$(date +%s)
+debut=$(date +%s)
 
-datafile=$1
-outputfile="temp/tmp_d1.csv"
-outputpng="temp/tmp_d1.png"
+fichier=$1
+fichierdeSortie="temp/tmp_d1.csv"
+pngdeSortie="temp/tmp_d1.png"
 
 
 awk -F';' 'NR>1{
@@ -19,9 +19,7 @@ awk -F';' 'NR>1{
     for (nom_prenom in count) {
         print count[nom_prenom] " : " nom_prenom
     }
-}' $datafile | sort -nr -k1,1 | head > "$outputfile"
-
-
+}' $fichier | sort -nr -k1,1 | head > "$fichierdeSortie"
 
 gnuplot <<- EOF
     reset
@@ -49,10 +47,8 @@ EOF
 convert temp/tmp_d1.png -rotate 90 images/d1.png # rotation de 90 degrés de tmp.png pour avoir un histogramme horizontale 
 xdg-open images/d1.png # ouverture du png qui contient le graphique
 
-end=$(date +%s)
-runtime=$(( $end - $start ))
-echo "Temps d'exécution : $runtime secondes"
+fin=$(date +%s)
+duree=$(( $fin - $debut ))
+echo "Temps d'exécution : $duree secondes"
 
 exit 0
-
-
