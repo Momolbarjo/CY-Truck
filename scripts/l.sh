@@ -1,10 +1,9 @@
 #!/bin/bash
 
-start=$(date +%s)
+debut=$(date +%s)
 
-
-datafile=$1
-outputfile="temp/tmp_l.csv"
+fichier=$1
+fichierdeSortie="temp/tmp_l.csv"
 
 LC_NUMERIC=C awk -F';' 'NR>1{
     id = $1
@@ -14,7 +13,7 @@ LC_NUMERIC=C awk -F';' 'NR>1{
     for (id in id_km) {
         printf "%s;%f\n", id, id_km[id]
     }
-}' $datafile |sort -t';' -k2,2nr -g | head -n 10 |sort -t';' -k1,1nr > "$outputfile" 
+}' $fichier |sort -t';' -k2,2nr -g | head -n 10 |sort -t';' -k1,1nr > "$fichierdeSortie" 
 
 gnuplot <<- EOF
     reset
@@ -35,12 +34,9 @@ gnuplot <<- EOF
 EOF
 
 
-end=$(date +%s)
-runtime=$(( $end - $start ))
-echo "Temps d'exécution : $runtime secondes"
+fin=$(date +%s)
+duree=$(( $fin - $debut ))
+echo "Temps d'exécution : $duree secondes"
 xdg-open images/l.png # ouverture du png qui contient le graphique
 
 exit 0
-
-
-
