@@ -4,8 +4,6 @@ debut=$(date +%s)
 
 fichier=$1
 fichierdeSortie="temp/tmp_d1.csv"
-pngdeSortie="temp/tmp_d1.png"
-
 
 awk -F';' 'NR>1{
     nom_prenom = $6
@@ -42,7 +40,6 @@ gnuplot <<- EOF
     set term png  size 900,800
     plot 'temp/tmp_d1.csv' using 1:xtic(2)  notitle with boxes axes x1y2 # graphique tracé à l'aide des axes x1 et y2.
 EOF
-
 
 convert temp/tmp_d1.png -rotate 90 images/d1.png # rotation de 90 degrés de tmp.png pour avoir un histogramme horizontale 
 xdg-open images/d1.png # ouverture du png qui contient le graphique
