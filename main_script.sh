@@ -26,7 +26,7 @@ if [ "$#" -ge 2 ] && [ "$#" -lt 9 ] && [ "${1##*.}" = "csv" ]; then # https://ww
     for opt in "$@"
     do
         if [ "$opt" = "-h" ]; then
-            echo "Usage: $0 .csv parameters (-d1,-d2,-l,-s,-t,-r)"
+            echo "Usage: $0 .csv parametres (-d1,-d2,-l,-s,-t,-r)"
             exit 0
         fi
         if [ "${options[$opt]}" = "true" ]; then
