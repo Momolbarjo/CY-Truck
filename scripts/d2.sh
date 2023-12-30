@@ -4,7 +4,6 @@ debut=$(date +%s)
 
 fichier=$1
 fichierdeSortie="temp/tmp_d2.csv"
-pngdeSortie="temp/tmp_d2.png"
 
 LC_NUMERIC=C awk -F';' 'NR>1{
     nom_prenom = $6
