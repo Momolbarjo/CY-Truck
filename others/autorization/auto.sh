@@ -13,11 +13,11 @@ sleep 1
 
 LOGS=$(zenity --password --username)
 
-USERNAME=$(echo "$LOGS" | cut -d'|' -f1)
-PASSWORD=$(echo "$LOGS" | cut -d'|' -f2)
+nomUtilisateur=$(echo "$LOGS" | cut -d'|' -f1)
+motdePasse=$(echo "$LOGS" | cut -d'|' -f2)
 
 
-if [ "$USERNAME" = "admin" ] && [ "$PASSWORD" = "miaou" ]; then
+if [ "$nomUtilisateur" = "admin" ] && [ "$motdePasse" = "miaou" ]; then
 	zenity --info --title="Connexion réussie" --text="Bienvenue, chef."
 	chmod 777 main_script.sh
 else
