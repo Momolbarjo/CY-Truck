@@ -2,3 +2,4 @@
 21/12/2023 premier traitement réalisé , creation des dossiers necessaires.
 26/12/2023 traitement d2 et L réalisés, creation des liens avec les autres dossiers.
 29/12/2023 Modification de main_script pour qu'il puisse gerer d'autres fichiers de données que data.csv (si le fichier est au format csv).
+03/01/2024 Avancée du traitement T.
