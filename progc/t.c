@@ -9,195 +9,144 @@
 // DEFINITION DE LA STRUCTURE AVL :
 
 typedef struct Avl{
-    char ville[TAILLE];
-    int val;
-    int equilibre;
-    struct Avl* fg;
-    struct Avl* fd;
+    	char ville[TAILLE];
+    	int val;
+    	int hauteur;
+    	struct Avl* fg;
+    	struct Avl* fd;
 }Avl,*pAvl;
-
-
-// FONCTIONS min ET max :
-
-int min2(int a, int b){
-	
-	if(a >= b){
-		return b;
-	}
-	
-	else{
-		return a;
-	}
-}
-
-
-int min3(int a, int b, int c){
-
-	if(a <= b && a <= c){
-		return a;
-	}
-	
-	else if(b <= a && b <= c){
-		return b;
-	}
-
-	else if(c <= a && c <= b){
-		return c;
-	}
-}
-
-
-int max2(int a, int b){
-	
-	if(a <= b){
-		return b;
-	}
-	
-	else{
-		return a;
-	}
-}
-
-
-int max3(int a, int b, int c){
-
-	if(a >= b && a >= c){
-		return a;
-	}
-	
-	else if(b >= a && b >= c){
-		return b;
-	}
-
-	else if(c >= a && c >= b){
-		return c;
-	}
-}
 
 
 // FONCTIONS POUR LES AVL :
 
 pAvl creerArbre(char* nom, int num){
-    pAvl monAvl=(pAvl)malloc(sizeof(Avl));
+    
+	pAvl monAvl=(pAvl)malloc(sizeof(Avl));
 
-    if(monAvl==NULL){
-        fprintf(stderr,"Erreur d'allocation mémoire !\n");
-        exit(EXIT_FAILURE);
-    }
+    	if(monAvl==NULL){
+        	printf("Erreur d'allocation mémoire !\n");
+       		exit(EXIT_FAILURE);
+   	}
 
-    strcpy(monAvl->ville, nom);
-    monAvl->val=num;
-    monAvl->equilibre=0;
-    monAvl->fg=NULL;
-    monAvl->fd=NULL;
+   	strcpy(monAvl->ville, nom);
+    	monAvl->val=num;
+    	monAvl->hauteur=1;
+    	monAvl->fg=NULL;
+    	monAvl->fd=NULL;
 
-    return monAvl;
+    	return monAvl;
 }
 
 
-pAvl rotationGauche(pAvl monAvl){
+int hauteur(pAvl monAvl){
+	
+	if(monAvl != NULL){
+		return monAvl->hauteur;
+	}
+	
+	else{
+		return 0;
+	}
+}
 
-    pAvl pivot;
-    int eqA,eqB;
 
-    pivot=monAvl->fd;
-    monAvl->fd=pivot->fg;
-    pivot->fg=monAvl;
+void majHauteur(pAvl monAvl){
+	
+	if(monAvl != NULL){
+		int hauteurG = hauteur(monAvl->fg);
+		int hauteurD = hauteur(monAvl->fd);
+		
+		if(hauteurG > hauteurD){
+			monAvl->hauteur = hauteurG + 1;
+		}
 
-    eqA=monAvl->equilibre;
-    eqB=pivot->equilibre;
-
-    monAvl->equilibre=eqA-max2(eqB,0)-1;
-    pivot->equilibre= min3(eqA-2,eqA+eqB-2,eqB-1);
-
-    monAvl=pivot;
-
-    return monAvl;
+		else{
+			monAvl->hauteur = hauteurD + 1;
+		}
+	}
 }
 
 pAvl rotationDroite(pAvl monAvl){
 
-    pAvl pivot;
-    int eqA,eqB;
-
-    pivot=monAvl->fg;
-    monAvl->fg=pivot->fd;
-    pivot->fd=monAvl;
-
-    eqA=monAvl->equilibre;
-    eqB=pivot->equilibre;
-
-    monAvl->equilibre=eqA-min2(eqB,0)+1;
-    pivot->equilibre= max3(eqA+2,eqA+eqB+2,eqB+1);
-
-    monAvl=pivot;
-
-    return monAvl;
-}
-
-
-pAvl doubleRotationGauche(pAvl monAvl){
-    pAvl pivot;
-    monAvl->fd=rotationDroite(monAvl->fd);
+	pAvl A = monAvl->fg;
+    	pAvl B = A->fd;
     
-    return rotationGauche(monAvl);
-}
-
-pAvl doubleRotationDroite(pAvl monAvl){
-    pAvl pivot;
-    monAvl->fg=rotationGauche(monAvl->fg);
+    	A->fd = monAvl;
+    	monAvl->fg = B;
     
-    return rotationDroite(monAvl);
+	majHauteur(monAvl);
+	majHauteur(A);
+
+   	return A;
+}
+
+pAvl rotationGauche(pAvl monAvl){
+
+	pAvl A = monAvl->fd;
+    	pAvl B = A->fg;
+    
+    	A->fg = monAvl;
+    	monAvl->fd = B;
+    
+	majHauteur(monAvl);
+	majHauteur(A);
+
+   	return A;
 }
 
 
-pAvl equilibrerAVL(pAvl monAvl){
-    if(monAvl->equilibre >=2 ){
-        if(monAvl->fd->equilibre >= 0){
-            return rotationGauche(monAvl);
-        }
-        else{
-            return doubleRotationGauche(monAvl);
-        }
-    }
-    else if(monAvl->equilibre <= -2){
-        if(monAvl->fg->equilibre <=0){
-            return rotationDroite(monAvl);
-        }
-        else{
-            return doubleRotationDroite(monAvl);
-        }
-    }
-    return monAvl;
+int equilibre(pAvl monAvl){
+	
+	if(monAvl != NULL){
+		return hauteur(monAvl->fg) - hauteur(monAvl->fd);
+	}
+	
+	else{
+		return 0;
+	}
 }
 
 
-pAvl ajoutAVL(pAvl monAvl, char* nom, int num, int* h){
+pAvl ajoutAVL(pAvl monAvl, char* nom, int num){
 	
 	if(monAvl == NULL){
-		*h = 1;
 		return creerArbre(nom, num);
 	}
 
 	else if(num < monAvl->val){
-		monAvl->fg = ajoutAVL(monAvl->fg, nom, num, h);
-		*h--;
+		monAvl->fg = ajoutAVL(monAvl->fg, nom, num);
 	}
 	
 	else if(num >= monAvl->val){
-		monAvl->fd = ajoutAVL(monAvl->fd, nom, num, h);
-		*h++;
+		monAvl->fd = ajoutAVL(monAvl->fd, nom, num);
 	}
 	
-	if(*h != 0){
-		monAvl->equilibre = monAvl->equilibre + *h;
+	
+	majHauteur(monAvl);
+	
+	int eq = equilibre(monAvl);
+	
+	if(eq > 1){
 		
-		if(monAvl->equilibre == 0){
-			*h =0;
+		if(num < monAvl->fg->val){
+			return rotationDroite(monAvl);
 		}
 		
-		else{
-			*h = 1;
+		else if(num >= monAvl->fg->val){
+			monAvl->fg = rotationGauche(monAvl->fg);
+			return rotationDroite(monAvl);
+		}
+	}
+	
+	if(eq < -1){
+		
+		if(num < monAvl->fd->val){
+			return rotationGauche(monAvl);
+		}
+		
+		else if(num >= monAvl->fd->val){
+			monAvl->fd = rotationDroite(monAvl->fd);
+			return rotationGauche(monAvl);
 		}
 	}
 	
@@ -207,31 +156,36 @@ pAvl ajoutAVL(pAvl monAvl, char* nom, int num, int* h){
 
 void infixeAvl(pAvl monAvl){
 	
-	if(monAvl == NULL){
-		return;
+	if(monAvl != NULL){
+		infixeAvl(monAvl->fg);
+		printf("%s %d \n",monAvl->ville,monAvl->val);
+		infixeAvl(monAvl->fd);
 	}
+}
+
+void libererAVL(pAvl monAvl){
 	
-	infixeAvl(monAvl->fg);
-	printf("%s %d \n",monAvl->ville,monAvl->val);
-	infixeAvl(monAvl->fd);
+	if(monAvl != NULL){
+		libererAVL(monAvl->fg);
+		libererAVL(monAvl->fd);
+		free(monAvl);
+	}
 }
 
 
-// AUTRES FONCTIONS :
-
-void dejaFait(char* nom, pAvl monAvl, int* test){
+void recherche(char* nom, pAvl monAvl, int* test){
 
 	if(monAvl == NULL){
 		return;
 	}
 	
-	if(strcmp(monAvl->ville, nom) == 0){
+	else if(strcmp(monAvl->ville, nom) == 0){
 		*test = 1;
 		return;
 	}
 	
-	dejaFait(nom, monAvl->fg, test);
-	dejaFait(nom, monAvl->fd, test);
+	recherche(nom, monAvl->fg, test);
+	recherche(nom, monAvl->fd, test);
 					
 }
 
@@ -302,12 +256,13 @@ int main(void){
 		total = compteur1 + compteur2 - doublon;
 	
 	
-		dejaFait(chaine1,villeAVL,&verif);
+		recherche(chaine1,villeAVL,&verif);
 		
 		if(verif != 1){
-			villeAVL = ajoutAVL(villeAVL,chaine1,total,&(villeAVL->equilibre));
+			villeAVL = ajoutAVL(villeAVL,chaine1,total);
 		}
-	
+		
+		printf("%s %d \n",chaine1,total);
 	}
 	
 	fclose(fichier1);
@@ -316,6 +271,7 @@ int main(void){
 	
 	infixeAvl(villeAVL);
 	
+	libererAVL(villeAVL);
 		
 	
 	return 0;
