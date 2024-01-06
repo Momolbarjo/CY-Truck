@@ -5,13 +5,12 @@
 
 #define TAILLE 50
 
-
 // DEFINITION DE LA STRUCTURE AVL :
 
 typedef struct Avl{
     	char ville[TAILLE];
-    	int val;
-    	int hauteur;
+    	unsigned short val;
+    	char hauteur;
     	struct Avl* fg;
     	struct Avl* fd;
 }Avl,*pAvl;
@@ -24,7 +23,7 @@ pAvl creerArbre(char* nom, int num){
 	pAvl monAvl=(pAvl)malloc(sizeof(Avl));
 
     	if(monAvl==NULL){
-        	printf("Erreur d'allocation mémoire !\n");
+        	printf("Erreur d'allocation mÃ©moire !\n");
        		exit(EXIT_FAILURE);
    	}
 
@@ -38,7 +37,7 @@ pAvl creerArbre(char* nom, int num){
 }
 
 
-int hauteur(pAvl monAvl){
+char hauteur(pAvl monAvl){
 	
 	if(monAvl != NULL){
 		return monAvl->hauteur;
@@ -50,52 +49,66 @@ int hauteur(pAvl monAvl){
 }
 
 
-void majHauteur(pAvl monAvl){
-	
-	if(monAvl != NULL){
-		int hauteurG = hauteur(monAvl->fg);
-		int hauteurD = hauteur(monAvl->fd);
-		
-		if(hauteurG > hauteurD){
-			monAvl->hauteur = hauteurG + 1;
-		}
+void majHauteur(pAvl monAvl) {
+    if (monAvl != NULL) {
+        char hauteurG = hauteur(monAvl->fg);
+        char hauteurD = hauteur(monAvl->fd);
 
-		else{
-			monAvl->hauteur = hauteurD + 1;
-		}
-	}
-}
-
-pAvl rotationDroite(pAvl monAvl){
-
-	pAvl A = monAvl->fg;
-    	pAvl B = A->fd;
-    
-    	A->fd = monAvl;
-    	monAvl->fg = B;
-    
-	majHauteur(monAvl);
-	majHauteur(A);
-
-   	return A;
-}
-
-pAvl rotationGauche(pAvl monAvl){
-
-	pAvl A = monAvl->fd;
-    	pAvl B = A->fg;
-    
-    	A->fg = monAvl;
-    	monAvl->fd = B;
-    
-	majHauteur(monAvl);
-	majHauteur(A);
-
-   	return A;
+        if (hauteurG > hauteurD) {
+            monAvl->hauteur = hauteurG + 1;
+        } else {
+            monAvl->hauteur = hauteurD + 1;
+        }
+    }
 }
 
 
-int equilibre(pAvl monAvl){
+pAvl rotationDroite(pAvl monAvl) {
+    if (monAvl == NULL || monAvl->fg == NULL) {
+        return monAvl;
+    }
+
+    pAvl A = monAvl->fg;
+    if (A->fd == NULL) {
+        return monAvl;
+    }
+
+    pAvl B = A->fd;
+
+    A->fd = monAvl;
+    monAvl->fg = B;
+
+    majHauteur(monAvl);
+    majHauteur(A);
+
+    return A;
+}
+
+
+pAvl rotationGauche(pAvl monAvl) {
+    if (monAvl == NULL || monAvl->fd == NULL) {
+        return monAvl;
+    }
+
+    pAvl A = monAvl->fd;
+    if (A->fg == NULL) {
+        return monAvl;
+    }
+
+    pAvl B = A->fg;
+
+    A->fg = monAvl;
+    monAvl->fd = B;
+
+    majHauteur(monAvl);
+    majHauteur(A);
+
+    return A;
+}
+
+
+
+char equilibre(pAvl monAvl){
 	
 	if(monAvl != NULL){
 		return hauteur(monAvl->fg) - hauteur(monAvl->fd);
@@ -107,60 +120,54 @@ int equilibre(pAvl monAvl){
 }
 
 
-pAvl ajoutAVL(pAvl monAvl, char* nom, int num){
-	
-	if(monAvl == NULL){
-		return creerArbre(nom, num);
-	}
+pAvl ajoutAVL(pAvl monAvl, char* nom, int num) {
+    if (monAvl == NULL) {
+        return creerArbre(nom, num);
+    }
 
-	else if(num < monAvl->val){
-		monAvl->fg = ajoutAVL(monAvl->fg, nom, num);
-	}
-	
-	else if(num >= monAvl->val){
-		monAvl->fd = ajoutAVL(monAvl->fd, nom, num);
-	}
-	
-	
-	majHauteur(monAvl);
-	
-	int eq = equilibre(monAvl);
-	
-	if(eq > 1){
-		
-		if(num < monAvl->fg->val){
-			return rotationDroite(monAvl);
-		}
-		
-		else if(num >= monAvl->fg->val){
-			monAvl->fg = rotationGauche(monAvl->fg);
-			return rotationDroite(monAvl);
-		}
-	}
-	
-	if(eq < -1){
-		
-		if(num < monAvl->fd->val){
-			return rotationGauche(monAvl);
-		}
-		
-		else if(num >= monAvl->fd->val){
-			monAvl->fd = rotationDroite(monAvl->fd);
-			return rotationGauche(monAvl);
-		}
-	}
-	
-	return monAvl;
-}	
+    if (num < monAvl->val) {
+        monAvl->fg = ajoutAVL(monAvl->fg, nom, num);
+    } else if (num >= monAvl->val) {
+        monAvl->fd = ajoutAVL(monAvl->fd, nom, num);
+    }
+
+    majHauteur(monAvl);
+
+    char eq = equilibre(monAvl);
+
+    if (eq > 1) {
+        if (num < monAvl->fg->val) {
+            return rotationDroite(monAvl);
+        } else if (num >= monAvl->fg->val) {
+            monAvl->fg = rotationGauche(monAvl->fg);
+            return rotationDroite(monAvl);
+        }
+    }
+
+    if (eq < -1) {
+        if (num < monAvl->fd->val) {
+            monAvl = rotationGauche(monAvl);
+            return monAvl;
+        } else if (num >= monAvl->fd->val) {
+            monAvl->fd = rotationDroite(monAvl->fd);
+            return rotationGauche(monAvl);
+        }
+    }
+
+    return monAvl;
+}
 
 
-void infixeAvl(pAvl monAvl){
-	
-	if(monAvl != NULL){
-		infixeAvl(monAvl->fg);
-		printf("%s %d \n",monAvl->ville,monAvl->val);
-		infixeAvl(monAvl->fd);
-	}
+void infixeAvl(pAvl monAvl) {
+    if (monAvl != NULL) {
+        if (monAvl->fg != NULL) {
+            infixeAvl(monAvl->fg);
+        }
+        printf("%s %hu \n", monAvl->ville, monAvl->val);
+        if (monAvl->fd != NULL) {
+            infixeAvl(monAvl->fd);
+        }
+    }
 }
 
 void libererAVL(pAvl monAvl){
@@ -173,7 +180,7 @@ void libererAVL(pAvl monAvl){
 }
 
 
-void recherche(char* nom, pAvl monAvl, int* test){
+void recherche(char* nom, pAvl monAvl, char* test){
 
 	if(monAvl == NULL){
 		return;
@@ -190,6 +197,7 @@ void recherche(char* nom, pAvl monAvl, int* test){
 }
 
 
+
 // MAIN :
 
 int main(void){
@@ -197,30 +205,33 @@ int main(void){
 	FILE* fichier1 = NULL;
 	FILE* fichier2 = NULL;
 	FILE* fichier3 = NULL;
-	int total, compteur1, compteur2, doublon, verif;
+	unsigned short total, compteur1, compteur2, doublon; 
+	char verif;
 	char chaine1[TAILLE];
 	char chaine2[TAILLE];
 	char chaine3[TAILLE];
 	
 	pAvl villeAVL = NULL;
 	
-	fichier1 = fopen("ville.txt","r");
+	fichier1 = fopen("temp/ville.txt","r");
 	
 	if(fichier1 == NULL){
 		printf("ERREUR LORS DE L'OUVERTURE DE ville.txt ! \n");
 		exit(1);
 	}	
 	
-	fichier2 = fopen("depart.txt","r");
+	fichier2 = fopen("temp/depart.txt","r");
 	
 	if(fichier2 == NULL){
 		printf("ERREUR LORS DE L'OUVERTURE DE depart.txt ! \n");
+		exit(1);
 	}
 	
-	fichier3 = fopen("arrive.txt","r");
+	fichier3 = fopen("temp/arrive.txt","r");
 	
 	if(fichier3 == NULL){
 		printf("ERREUR LORS DE L'OUVERTURE DE arrive.txt ! \n");
+		exit(1);
 	}
 	
 	while(fgets(chaine1,TAILLE,fichier1) != NULL){
@@ -262,7 +273,7 @@ int main(void){
 			villeAVL = ajoutAVL(villeAVL,chaine1,total);
 		}
 		
-		printf("%s %d \n",chaine1,total);
+		printf("%s %hu \n",chaine1,total);
 	}
 	
 	fclose(fichier1);
