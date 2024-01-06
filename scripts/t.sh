@@ -2,19 +2,17 @@
 
 
 debut=$(date +%s)
+fichier=$1
 
-awk -F';' 'NR > 1 { print $3 "\0" }' data.csv > ville.txt
-awk -F';' 'NR > 1 { print $4 "\0" }' data.csv > arrive.txt
-awk -F';' 'NR > 1 { print $3 "\0"  }' data.csv > depart.txt
+awk -F';' 'NR > 1 { print $3 "\0" }' $fichier > "temp/ville.txt"
+awk -F';' 'NR > 1 { print $4 "\0" }' $fichier > "temp/arrive.txt"
+awk -F';' 'NR > 1 { print $3 "\0"  }' $fichier  > "temp/depart.txt"
 
-chmod 777 arrive.txt
-chmod 777 depart.txt
+chmod 777 temp/ville.txt
+chmod 777 temp/arrive.txt
+chmod 777 temp/depart.txt
 
-./traitementT
-
-rm ville.txt
-rm arrive.txt
-rm depart.txt
+progc/./traitementT
 
 
 fin=$(date +%s)
