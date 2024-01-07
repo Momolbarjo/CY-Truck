@@ -221,20 +221,15 @@ void libererAVL(pAvl monAvl){
 }
 
 
-void recherche(char* nom, pAvl monAvl, char* test){
+int recherche(char* nom, pAvl monAvl, char* test){
 
-	if(monAvl == NULL){
-		return;
-	}
-	
-	else if(strcmp(monAvl->elt->nom, nom) == 0){
-		*test = 1;
-		return;
-	}
-	
-	recherche(nom, monAvl->fg, test);
-	recherche(nom, monAvl->fd, test);
-					
+	if(monAvl != NULL){
+		if(strcmp(monAvl->elt->nom, nom) == 0){
+			return 1;
+		}
+		recherche(nom, monAvl->fg, test);
+		recherche(nom, monAvl->fd, test);
+	}				
 }
 
 
@@ -245,6 +240,8 @@ void nb_apparition(pVille maVille, FILE* fichier2, FILE* fichier3){
 	
 	fseek(fichier2,0,SEEK_SET);
 	fseek(fichier3,0,SEEK_SET);
+	
+	
 		
 	while(fgets(chaine2,TAILLE,fichier2) != NULL && fgets(chaine3,TAILLE,fichier3) != NULL){				
 		if(strcmp(maVille->nom,chaine2) == 0){
@@ -265,8 +262,7 @@ void nb_apparition(pVille maVille, FILE* fichier2, FILE* fichier3){
 		memset(chaine3, 0, sizeof(chaine3));
 	}
 	
-	fclose(fichier2);
-	fclose(fichier3);
+	//printf("%s -> Total : %hu / Depart : %hu ;\n",maVille->nom,maVille->nb_fois,maVille->nb_depart );
 }
 
 
@@ -281,25 +277,13 @@ pAvl ajoutVille(pAvl a){
 	pVille maVille = NULL;
 	
 	fichier1 = fopen("temp/ville.txt","r");
-	
-	if(fichier1 == NULL){
-		printf("ERREUR LORS DE L'OUVERTURE DE ville.txt ! \n");
-		exit(1);
-	}	
-	
 	fichier2 = fopen("temp/depart.txt","r");
-	
-	if(fichier2 == NULL){
-		printf("ERREUR LORS DE L'OUVERTURE DE depart.txt ! \n");
-		exit(1);
-	}
-	
 	fichier3 = fopen("temp/arrive.txt","r");
 	
-	if(fichier3 == NULL){
-		printf("ERREUR LORS DE L'OUVERTURE DE arrive.txt ! \n");
+	if(fichier1 == NULL || fichier2 == NULL || fichier3 == NULL){
+		printf("ERREUR LORS DE L'OUVERTURE D'UN FICHIER ! \n");
 		exit(1);
-	}
+	}	
 	
 	while(fgets(chaine1,TAILLE,fichier1) != NULL){
 		verif = 0;
@@ -308,12 +292,12 @@ pAvl ajoutVille(pAvl a){
 		if(verif != 1){
 			maVille = creerVille(chaine1, 0, 0);
 			nb_apparition(maVille,fichier2,fichier3);
-			a = ajoutAVL(a,maVille);
+			ajoutAVL(a,maVille);
+		}
+		else{
+			printf("%d",verif);
 		}
 	}
-	
-
-	printf("%s %hu %hu \n",maVille->nom,maVille->nb_fois,maVille->nb_depart );
 	
 	fclose(fichier1);
 	fclose(fichier2);
