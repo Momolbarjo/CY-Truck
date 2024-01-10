@@ -1,5 +1,31 @@
 #!/bin/bash
 
+executable_parent="progc/src"
+
+executables=("noEnter" "main_s")
+
+
+for executable in "${executables[@]}"; do
+    chemin_complet="$executable_parent/$executable"
+    if [ ! -f "$chemin_complet" ]; then
+        echo "L'exécutable $executable n'est pas présent. Compilation en cours..."
+        
+        # Compiler le code source
+        make -C progc
+        
+        # Vérifier si la compilation s'est bien déroulée
+        if [ $? -ne 0 ]; then
+            echo "Erreur lors de la compilation."
+            exit 1
+        fi
+    fi
+done
+
+if [ ! -x "$0" ]; then
+   echo "Vous ne disposez pas des droits , merci de vous authentifier"
+   exit 1
+fi
+
 if [ ! -d "temp" ]; then
     mkdir temp
 
@@ -11,9 +37,10 @@ if [ ! -d "images" ]; then
     mkdir images
 fi
 
+
 declare -A options
 
-if [ "$#" -ge 2 ] && [ "$#" -lt 9 ] && [ "${1##*.}" = "csv" ]; then # https://www.math-linux.com/linux/bash/article/comment-extraire-le-nom-et-l-extension-d-un-fichier-en-bash
+if [ "$#" -ge 2 ] && [ "$#" -lt 9 ] && [ "${1##*.}" = "csv" ]; then
 
     if [ ! -f "data/$1" ]; then
     	echo "Erreur : le fichier doit etre present dans le dossier data."
