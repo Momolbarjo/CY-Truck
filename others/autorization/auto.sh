@@ -4,8 +4,7 @@ rhythmbox-client --play
 
 cat others/ansi/truck.ansi.txt
 echo "Appuyer sur une touche.." 
-sleep 1
-progc/./noEnter
+progc/src/./noEnter
 
 rhythmbox-client --stop
 
@@ -27,5 +26,7 @@ fi
 
 clear
 
+
 exit 0
+
 
