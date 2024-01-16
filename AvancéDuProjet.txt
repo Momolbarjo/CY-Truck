@@ -5,3 +5,4 @@
 03/01/2024 Avancée du traitement T.
 07/01/2024 Avancée du traitement T.
 11/01/2024 makefile et modulation du code c
+16/01/2024 traitement S
