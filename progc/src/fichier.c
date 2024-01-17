@@ -27,7 +27,7 @@ void afficherAVLdansSortie(pAvl racine,FILE* sortie, int *n) {
     afficherAVLdansSortie(racine->fd,sortie, n);
 
     if (*n > 0) {
-        fprintf(sortie,"id: %u, max_min: %f, max : %f, min : %f, moyenne : %f\n", racine->donnee.id, racine->donnee.max_min, racine->donnee.max, racine->donnee.min, racine->donnee.moy);
+        fprintf(sortie,"%u,%f,%f,%f,%f\n", racine->donnee.id, racine->donnee.max_min, racine->donnee.max, racine->donnee.min, racine->donnee.moy);
         (*n)--;
     }
 
