@@ -1,24 +1,33 @@
 #!/bin/bash
 
-
 debut=$(date +%s)
 fichier=$1
 
-awk -F';' 'NR > 1 { print $3 "\0" }' $fichier > "temp/ville.txt"
-awk -F';' 'NR > 1 { print $4 "\0" }' $fichier > "temp/arrive.txt"
-awk -F';' 'NR > 1 { print $3 "\0"  }' $fichier  > "temp/depart.txt"
+awk -F';' '
+function normalize(str) {
+    gsub(/[[:space:]]/, "", str);
+}
 
-chmod 777 temp/ville.txt
-chmod 777 temp/arrive.txt
-chmod 777 temp/depart.txt
-
-progc/./traitementT
-
+{
+    if ($3 != "") {
+        ville = normalize($3);
+        depart[ville]++;
+        total[ville]++;
+    }
+    if ($4 != "" && $4 != $3) {
+        ville = normalize($4);
+        total[ville]++;
+    }
+}
+END {
+    for (str in count_total) {
+        printf "%s,%d,%d\n", str, total[str], depart[str];
+    }
+}' "$fichier" > resultat.csv
 
 fin=$(date +%s)
 duree=$(( $fin - $debut ))
 
-echo "Temps d'exécution : $duree secondes"
-
+echo "Temps d'exécution de AWK : $duree secondes"
 
 exit 0
