@@ -1,4 +1,4 @@
-```#!/bin/bash
+#!/bin/bash
 
 file=$1
 
@@ -52,4 +52,3 @@ end=$SECONDS
 duration=$(( end - start ))
 
 echo "Temps d'exécution: $duration secondes"
-```
