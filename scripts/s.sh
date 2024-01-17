@@ -1,8 +1,8 @@
-#!/bin/bash
+```#!/bin/bash
 
-fichier=$1
+file=$1
 
-debut=$SECONDS
+start=$SECONDS
 
 LC_NUMERIC=C awk -F';' 'NR>1 {
     id=$1; 
@@ -20,9 +20,9 @@ END {
     for (id in counts) {
         average_distance = (counts[id] > 0) ? total_distances[id] / counts[id] : 0;
         diff_min_max = max_distances[id] - min_distances[id];
-        printf "%s\t%.3f\t%.3f\t%.3f\t%.3f\n", id, min_distances[id], max_distances[id], diff_min_max, average_distance
+        printf "%s\t%.3f\t%.3f\t%.3f\t%.3f\n", id, min_distances[id]+0, max_distances[id]+0, diff_min_max+0, average_distance+0
     }
-}' "$fichier" > distances.csv
+}' "$file" > distances.csv
 
 
 ./s
@@ -48,7 +48,8 @@ EOF
 
 
 
-fin=$SECONDS
-duree=$(( fin - debut ))
+end=$SECONDS
+duration=$(( end - start ))
 
 echo "Temps d'exécution: $duration secondes"
+```
