@@ -1,7 +1,7 @@
 #!/bin/bash
 
 fichier=$1
-debut=$SECONDS
+debut=$(date +%s)
 
 LC_NUMERIC=C awk -F';' 'NR>1 {
     id=$1; 
@@ -21,15 +21,15 @@ END {
         diff_min_max = max_distances[id] - min_distances[id];
         printf "%s\t%.3f\t%.3f\t%.3f\t%.3f\n", id, min_distances[id]+0, max_distances[id]+0, diff_min_max+0, average_distance+0
     }
-}' "$fichier" > "temp/s_tmp.csv"
+}' "$fichier" > "temp/tmp_s1.csv"
 
 
-progc/src/./s
+progc/src/./main_s
 
 gnuplot <<- EOF
     reset
     set terminal pngcairo size 1920,1080
-    set output 'imgaes/s.png'
+    set output 'images/s.png'
     set datafile separator ':'
     set title "Option -s : Distance = f(Route)" 
     set yrange [ * : * ] 
@@ -38,16 +38,16 @@ gnuplot <<- EOF
     set ylabel "DISTANCE (Km)" font ",10"
     set xlabel "ROUTE ID" font ",10" 
     
-    plot 'temp/donnestries_s.csv' using 0:3:4  with filledcurves fc rgb "#80E0A080"title 'Distance Max/Min (Km) ', \
+    plot 'temp/tmp_s2.csv' using 0:3:4  with filledcurves fc rgb "#80E0A080"title 'Distance Max/Min (Km) ', \
          "" using 5:xticlabels(1) smooth mcspline  lw 2 title 'Distance average (Km)'
          
                
-
 EOF
 
 
+fin=$(date +%s)
+duree=$(( $fin - $debut ))
+echo "Temps d'exécution : $duree secondes"
+xdg-open images/s.png
 
-end=$SECONDS
-duration=$(( end - start ))
-
-echo "Temps d'exécution: $duration secondes"
+exit 0
