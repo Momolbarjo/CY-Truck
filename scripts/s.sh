@@ -32,7 +32,7 @@ gnuplot <<- EOF
     set output 'images/s.png'
     set datafile separator ':'
     set title "Option -s : Distance = f(Route)" 
-    set yrange [ * : * ] 
+    set yrange [ 0 : * ] 
     set xtics nomirror  rotate by -45  font ",9"
     set ytics font ",9"
     set ylabel "DISTANCE (Km)" font ",10"
