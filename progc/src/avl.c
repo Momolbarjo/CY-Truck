@@ -87,35 +87,35 @@ char equilibre(pAvl monAvl) {
     }
 }
 
-pAvl doubleRotationGauche(pAvl myAvl) {
-    myAvl->fd = rotationDroite(myAvl->fd);
-    return rotationGauche(myAvl);
+pAvl doubleRotationGauche(pAvl monAvl) {
+    monAvl->fd = rotationDroite(monAvl->fd);
+    return rotationGauche(monAvl);
 }
 
-pAvl doubleRotationDroite(pAvl myAvl) {
-    myAvl->fg = rotationGauche(myAvl->fg);
-    return rotationDroite(myAvl);
+pAvl doubleRotationDroite(pAvl monAvl) {
+    monAvl->fg = rotationGauche(monAvl->fg);
+    return rotationDroite(monAvl);
 }
 
-pAvl equilibrerAVL(pAvl myAvl) {
-    if (myAvl == NULL) {
+pAvl equilibrerAVL(pAvl monAvl) {
+    if (monAvl == NULL) {
         return NULL;
     }
 
-    if (myAvl->equilibre >= 2) {
-        if (myAvl->fd != NULL && myAvl->fd->equilibre >= 0) {
-            return rotationGauche(myAvl);
+    if (monAvl->equilibre >= 2) {
+        if (monAvl->fd != NULL && monAvl->fd->equilibre >= 0) {
+            return rotationGauche(monAvl);
         } else {
-            return doubleRotationGauche(myAvl);
+            return doubleRotationGauche(monAvl);
         }
-    } else if (myAvl->equilibre <= -2) {
-        if (myAvl->fg != NULL && myAvl->fg->equilibre <= 0) {
-            return rotationDroite(myAvl);
+    } else if (monAvl->equilibre <= -2) {
+        if (monAvl->fg != NULL && monAvl->fg->equilibre <= 0) {
+            return rotationDroite(monAvl);
         } else {
-            return doubleRotationDroite(myAvl);
+            return doubleRotationDroite(monAvl);
         }
     }
-    return myAvl;
+    return monAvl;
 }
 
 pAvl insererNoeudAVL(pAvl racine, Donnee donnee) {
