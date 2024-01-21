@@ -24,7 +24,7 @@ gnuplot <<- EOF
     set style data histogram
     set boxwidth 0.7
     set style fill solid
-    set yrange [ 0 : 3000 ]
+    set yrange [ 0 : * ]
     set xtics  font ",9"
     set ytics font ",9"
     set ylabel "DISTANCE (Km)" font ",10"
