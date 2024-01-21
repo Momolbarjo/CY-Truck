@@ -30,7 +30,7 @@ gnuplot <<- EOF
     set style fill solid
     set xtics rotate out
     set y2tics rotate out 
-    set y2range [ 0 : 160000 ]
+    set y2range [ 0 : * ]
     set ytics nomirror
     unset ytics # desactivation de l'axe y1 pour utiliser l'axe y2.
     set xtics  font ",9"
