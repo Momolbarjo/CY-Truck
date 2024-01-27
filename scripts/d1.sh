@@ -17,7 +17,7 @@ awk -F';' 'NR>1{
     for (nom_prenom in count) {
         print count[nom_prenom] " : " nom_prenom
     }
-}' $fichier | sort -nr -k1,1 | head > "$fichierdeSortie"
+}' $fichier |sort -t':' -k1,1nr -g  | head > "$fichierdeSortie"
 
 gnuplot <<- EOF
     reset
