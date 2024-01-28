@@ -12,6 +12,7 @@ int getch(void) {
     tcsetattr(STDIN_FILENO, TCSANOW, &oldattr); 
     return ch; 
 } 
+
 Donnee extraireDonneeCSV(char *ligne) {
     Donnee donnee;
     char nombre_elem = sscanf(ligne, "%u\t%f\t%f\t%f\t%f", &donnee.id, &donnee.min, &donnee.max, &donnee.max_min, &donnee.moy);
