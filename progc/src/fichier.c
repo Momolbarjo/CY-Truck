@@ -12,16 +12,14 @@ int getch(void) {
     tcsetattr(STDIN_FILENO, TCSANOW, &oldattr); 
     return ch; 
 } 
-
 Donnee extraireDonneeCSV(char *ligne) {
     Donnee donnee;
-    sscanf(ligne, "%u\t%f\t%f\t%f\t%f", &donnee.id, &donnee.min, &donnee.max, &donnee.max_min, &donnee.moy);
-
-    if (sizeof(donnee->id) != sizeof(unsigned int) || sizeof(donnee->min) != sizeof(float) || sizeof(donnee->max) != sizeof(float) || sizeof(donnee->moy) != sizeof(float) || sizeof(donnee->max_min) != sizeof(float)) {
+    char nombre_elem = sscanf(ligne, "%u\t%f\t%f\t%f\t%f", &donnee.id, &donnee.min, &donnee.max, &donnee.max_min, &donnee.moy);
+    
+    if (nombre_elem != 5) {
         fprintf(stderr, "Erreur, le/les types de données de votre fichier CSV ne sont pas adaptés\n");
         exit(EXIT_FAILURE);
     }
-    
     return donnee;
 }
 
