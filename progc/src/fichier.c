@@ -16,6 +16,12 @@ int getch(void) {
 Donnee extraireDonneeCSV(char *ligne) {
     Donnee donnee;
     sscanf(ligne, "%u\t%f\t%f\t%f\t%f", &donnee.id, &donnee.min, &donnee.max, &donnee.max_min, &donnee.moy);
+
+    if (sizeof(donnee->id) != sizeof(unsigned int) || sizeof(donnee->min) != sizeof(float) || sizeof(donnee->max) != sizeof(float) || sizeof(donnee->moy) != sizeof(float) || sizeof(donnee->max_min) != sizeof(float)) {
+        fprintf(stderr, "Erreur, le/les types de données de votre fichier CSV ne sont pas adaptés\n");
+        exit(EXIT_FAILURE);
+    }
+    
     return donnee;
 }
 
