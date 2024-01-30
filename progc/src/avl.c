@@ -17,7 +17,8 @@ pAvl creerArbre(Donnee donnee) {
 char hauteur(pAvl monAvl) {
     if (monAvl != NULL) {
         return monAvl->hauteur;
-    } else {
+    } 
+    else {
         return 0;
     }
 }
@@ -29,7 +30,8 @@ void majHauteur(pAvl monAvl) {
 
         if (hauteurG > hauteurD) {
             monAvl->hauteur = hauteurG + 1;
-        } else {
+        } 
+        else {
             monAvl->hauteur = hauteurD + 1;
         }
     }
@@ -82,7 +84,8 @@ pAvl rotationGauche(pAvl monAvl) {
 char equilibre(pAvl monAvl) {
     if (monAvl != NULL) {
         return hauteur(monAvl->fg) - hauteur(monAvl->fd);
-    } else {
+    } 
+    else {
         return 0;
     }
 }
@@ -105,13 +108,16 @@ pAvl equilibrerAVL(pAvl monAvl) {
     if (monAvl->equilibre >= 2) {
         if (monAvl->fd != NULL && monAvl->fd->equilibre >= 0) {
             return rotationGauche(monAvl);
-        } else {
+        } 
+        else {
             return doubleRotationGauche(monAvl);
         }
-    } else if (monAvl->equilibre <= -2) {
+    } 
+    else if (monAvl->equilibre <= -2) {
         if (monAvl->fg != NULL && monAvl->fg->equilibre <= 0) {
             return rotationDroite(monAvl);
-        } else {
+        } 
+        else {
             return doubleRotationDroite(monAvl);
         }
     }
@@ -125,9 +131,11 @@ pAvl insererNoeudAVL(pAvl racine, Donnee donnee) {
 
     if (donnee.max_min < racine->donnee.max_min) {
         racine->fg = insererNoeudAVL(racine->fg, donnee);
-    } else if (donnee.max_min > racine->donnee.max_min) {
+    } 
+    else if (donnee.max_min > racine->donnee.max_min) {
         racine->fd = insererNoeudAVL(racine->fd, donnee);
-    } else {
+    } 
+    else {
         return racine;
     }
 
