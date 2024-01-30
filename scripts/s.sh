@@ -1,6 +1,7 @@
 #!/bin/bash
 
 fichier=$1
+sortie=temp/tmp_s2.csv
 debut=$(date +%s)
 
 LC_NUMERIC=C awk -F';' 'NR>1 {
@@ -23,8 +24,11 @@ END {
     }
 }' "$fichier" > "temp/tmp_s1.csv"
 
-
 progc/src/./main_s
+
+if [ ! -f $sortie ];then
+	exit 1
+fi
 
 gnuplot <<- EOF
     reset
@@ -38,12 +42,10 @@ gnuplot <<- EOF
     set ylabel "DISTANCE (Km)" font ",10"
     set xlabel "ROUTE ID" font ",10" 
     
-    plot 'temp/tmp_s2.csv' using 0:3:4  with filledcurves fc rgb "#80E0A080"title 'Distance Max/Min (Km) ', \
+    plot '$sortie' using 0:3:4  with filledcurves fc rgb "#80E0A080"title 'Distance Max/Min (Km) ', \
          "" using 5:xticlabels(1) smooth mcspline  lw 2 title 'Distance average (Km)'
-         
-               
+                       
 EOF
-
 
 fin=$(date +%s)
 duree=$(( $fin - $debut ))
