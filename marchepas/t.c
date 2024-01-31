@@ -28,6 +28,7 @@ commande Unix de type ‘sort’ ne doit être appelée ici.*/
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <stdbool.h>
 
 #define TAILLE 50
 #define ROUTE 7
@@ -415,7 +416,47 @@ pAvl traitement(pAvl a){
 	
 	return a;
 }
-	
+
+
+// Utilitaire pour comparer deux villes
+int comparerVilles(const void *a, const void *b) {
+    const Ville *villeA = (const Ville *)a;
+    const Ville *villeB = (const Ville *)b;
+
+    // Comparaison basée d'abord sur le nombre de fois traversées, puis alphabétiquement
+    if (villeA->nb_fois == villeB->nb_fois) {
+        return strcmp(villeA->nom, villeB->nom);
+    }
+    return villeB->nb_fois - villeA->nb_fois; // Pour trier en ordre décroissant
+}
+
+// Fonction récursive pour ajouter les villes à un tableau
+void ajouterVillesAuTableau(pAvl monAvl, Ville *villes, int *index) {
+    if (monAvl != NULL) {
+        ajouterVillesAuTableau(monAvl->fg, villes, index);
+        villes[*index] = *(monAvl->elt);
+        (*index)++;
+        ajouterVillesAuTableau(monAvl->fd, villes, index);
+    }
+}
+
+// Fonction pour extraire les 10 villes les plus traversées
+void extraireTopVilles(pAvl monAvl, Ville topVilles[10]) {
+    Ville *toutesLesVilles = malloc(MAX_VILLES * sizeof(Ville));
+    int index = 0;
+
+    ajouterVillesAuTableau(monAvl, toutesLesVilles, &index);
+
+    // Trier les villes par nombre de fois traversées et nom
+    qsort(toutesLesVilles, index, sizeof(Ville), comparerVilles);
+
+    // Copier les 10 premières villes
+    for (int i = 0; i < 10 && i < index; i++) {
+        topVilles[i] = toutesLesVilles[i];
+    }
+
+    free(toutesLesVilles);
+}
 
 
 // MAIN :
