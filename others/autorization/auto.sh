@@ -1,12 +1,9 @@
 #!/bin/bash
 
-rhythmbox-client --play
-
 cat others/ansi/truck.ansi.txt
 echo "Appuyer sur une touche.." 
 progc/src/./noEnter
 
-rhythmbox-client --stop
 
 sleep 1
 
