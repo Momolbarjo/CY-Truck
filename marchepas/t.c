@@ -84,6 +84,7 @@ t.c:327:35: note: expected ‘char *’ but argument is of type ‘pAvl’ {aka 
 #define ROUTE 7
 #define MAXI 1000
 #define MAX_VILLES 1000
+#define TAILLE_LOT 10000
 
 // DEFINITION DE LA STRUCTURE AVL :
 
@@ -412,6 +413,43 @@ pAvl ajoutVille(pAvl a, char* nom){
 
 
 // ... (Autres déclarations et fonctions) ...
+
+void traiterLot(pAvl *villeAVL, FILE* fichier1, FILE* fichier2, FILE* fichier3, FILE* fichier4) {
+    char nom1[TAILLE], nom2[TAILLE], verif, step_[2], step, routeid_[ROUTE];
+    unsigned short routeid;
+    int compteur = 0;
+
+    while (compteur < TAILLE_LOT && 
+           fgets(routeid_, ROUTE, fichier1) != NULL &&
+           fgets(step_, 2, fichier2) != NULL && 
+           fgets(nom1, TAILLE, fichier3) != NULL && 
+           fgets(nom2, TAILLE, fichier4) != NULL) {
+
+        step = atoi(step_);
+        routeid = atoi(routeid_);
+
+        verif = 0;
+
+        if (step == 1) {
+            verif = recherche(villeAVL, nom1, 1, routeid);
+            if (verif != 1) {
+                *villeAVL = ajoutVille(*villeAVL, nom1);
+            }
+        } else {
+            verif = recherche(villeAVL, nom1, 0, routeid);
+            if (verif != 1) {
+                *villeAVL = ajoutVille(*villeAVL, nom1);
+            }
+        }
+
+        verif = recherche(villeAVL, nom2, 0, routeid);
+        if (verif != 1) {
+            *villeAVL = ajoutVille(*villeAVL, nom2);
+        }
+
+        compteur++;
+    }
+}
 
 pAvl traitementEtTopVilles() {
     pAvl villeAVL = NULL;
