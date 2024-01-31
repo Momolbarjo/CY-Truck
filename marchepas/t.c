@@ -322,41 +322,33 @@ void libererAVL(pAvl monAvl){
 
 
 
-int recherche(char* nom, pAvl monAvl, char type, unsigned short route){
-	int i = 0;
-	int existe = 0;	
-	
-	if(monAvl != NULL){
-		if(strcmp(monAvl->elt->nom, nom) == 0){			
-			existe = 0;
-			
-			while(i<MAXI){
-				if(monAvl->elt->id[i] == route){
-					existe = 1;
-				}
-				
-				else if(monAvl->elt->id[i] == -1){
-					i++;
-				}
-				
-				else{
-					monAvl->elt->id[i] = route;
-				}
-			}
-			
-			if(existe == 0){
-				if(type == 1){
-					monAvl->elt->nb_depart += 1;
-				}
-			
-				monAvl->elt->nb_fois += 1;
-				return 1;
-			}
-		}
-		recherche(nom, monAvl->fg, type, route);
-		recherche(nom, monAvl->fd, type, route);
-	}				
+int recherche(pAvl *monAvl, char *nom, char type, unsigned short route) {
+    if (*monAvl == NULL) {
+        // Si la ville n'est pas trouvée, créez-la et ajoutez-la à l'AVL
+        pVille nouvelleVille = creerVille(nom);
+        if (type == 1) {
+            nouvelleVille->nb_depart = 1;
+        }
+        nouvelleVille->nb_fois = 1;
+        *monAvl = ajoutAVL(*monAvl, nouvelleVille);
+        return 1; // Nouvelle ville ajoutée
+    } else {
+        if (strcmp((*monAvl)->elt->nom, nom) == 0) {
+            // Si la ville existe déjà, mettez à jour ses données
+            if (type == 1) {
+                (*monAvl)->elt->nb_depart++;
+            }
+            (*monAvl)->elt->nb_fois++;
+            return 0; // Ville existante mise à jour
+        }
+        if (strcmp(nom, (*monAvl)->elt->nom) < 0) {
+            return recherche(&(*monAvl)->fg, nom, type, route);
+        } else {
+            return recherche(&(*monAvl)->fd, nom, type, route);
+        }
+    }
 }
+
 
 
 pAvl ajoutVille(pAvl a, char* nom){
