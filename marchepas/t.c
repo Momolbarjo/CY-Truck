@@ -429,35 +429,29 @@ pAvl traitement(pAvl a){
 	char nom1[TAILLE], nom2[TAILLE], verif, step_[2], step, routeid_[ROUTE];
 	unsigned short routeid;
 	
-	while(fgets(routeid_,ROUTE,fichier1) != NULL && fgets(step_,2,fichier2) != NULL && fgets(nom1,TAILLE,fichier3) != NULL && fgets(nom2,TAILLE,fichier4) != NULL){
-		
-		step = atoi(step_);
-		routeid = atoi(routeid_);
-		
-		verif = 0;
-		
-		if(step == 1){
-			verif = recherche(nom1,a,1,routeid);
-			
-			if(verif != 1){
-				a = ajoutVille(a,nom1);
-			}
-		}
-		
-		else{
-			verif = recherche(nom1,a,0,routeid);
-			
-			if(verif != 1){
-				a = ajoutVille(a,nom1);
-			}	
-		}
-		
-		verif = recherche(nom2,a,0,routeid);
-			
-		if(verif != 1){
-			ajoutVille(a,nom2);
-		}	
-	}
+	while(fgets(routeid_, ROUTE, fichier1) != NULL && fgets(step_, 2, fichier2) != NULL && fgets(nom1, TAILLE, fichier3) != NULL && fgets(nom2, TAILLE, fichier4) != NULL){
+    step = atoi(step_);
+    routeid = atoi(routeid_);
+
+    verif = 0;
+
+    if(step == 1){
+        verif = recherche(&a, nom1, 1, routeid);
+        if(verif != 1){
+            a = ajoutVille(a, nom1);
+        }
+    } else {
+        verif = recherche(&a, nom1, 0, routeid);
+        if(verif != 1){
+            a = ajoutVille(a, nom1);
+        }   
+    }
+
+    verif = recherche(&a, nom2, 0, routeid);
+    if(verif != 1){
+        a = ajoutVille(a, nom2);
+    }   
+}
 	
 	fclose(fichier1);
 	fclose(fichier2);
