@@ -5,6 +5,7 @@
 
 #define TAILLE 50
 #define MAXI 4
+#define MAX_VILLE 10
 
 // DEFINITION DE LA STRUCTURE AVL :
 
@@ -203,19 +204,34 @@ pAvl ajoutAVL(pAvl monAvl, Ville maVille) {
 }
 
 
-void infixeAvl(pAvl monAvl) {
-    	if (monAvl != NULL) {
-        	if (monAvl->fg != NULL) {
-            		infixeAvl(monAvl->fg);
-        	}
-        	
-        	printf("%s %hu \n", monAvl->elt.nom, monAvl->elt.nb_fois);
+void infixeDecroissant10(pAvl monAvl, int* compteur, Ville tab[MAX_VILLE]) {
+    	if (monAvl != NULL && *compteur < MAX_VILLE) {
         	
         	if (monAvl->fd != NULL) {
-            		infixeAvl(monAvl->fd);
+            		infixeDecroissant10(monAvl->fd, compteur, tab);
+        	}
+        
+        	if(*compteur < MAX_VILLE){
+        		printf("%s %u \n", monAvl->elt.nom, monAvl->elt.nb_fois);
+        		tab[*compteur] = monAvl->elt;
+        		(*compteur) ++;
+        	}
+        	
+        	if (monAvl->fg != NULL && *compteur < MAX_VILLE) {
+            		infixeDecroissant10(monAvl->fg, compteur, tab);
         	}
     	}
 }
+
+
+void infixe(pAvl racine) {
+    if (racine != NULL) {
+        infixe(racine->fg);
+        printf("%s %hu %hu \n ", racine->elt.nom,racine->elt.nb_fois,racine->elt.nb_depart);
+        infixe(racine->fd);
+    }
+}
+
 
 void libererAVL(pAvl monAvl){
 	
@@ -231,11 +247,7 @@ void libererAVL(pAvl monAvl){
 Ville extraireDonneeCSV_2(char *ligne) {
     	Ville ville;
     	
-    	//printf("%s \n",ligne);
-    	char nombre_elem = sscanf(ligne, "%s,%u,%u", ville.nom, &(ville.nb_fois), &(ville.nb_depart));
-	
-	//printf("%s\t%u\t%u \n", ville.nom, ville.nb_fois, ville.nb_depart);
-	printf("%d \n",nombre_elem);
+    	char nombre_elem = sscanf(ligne, "%[^,],%u,%u", ville.nom, &(ville.nb_fois), &(ville.nb_depart));
     	
     	if(nombre_elem != 3){
         	fprintf(stderr, "Erreur, le/les types de données de votre fichier CSV ne sont pas adaptés\n");
@@ -269,6 +281,24 @@ pAvl traitement(pAvl a){
 }
 
 
+void echanger(char a[TAILLE], char b[TAILLE]) {
+    	char temp[TAILLE];
+    	strcpy(temp,a);
+    	strcpy(a,b);
+    	strcpy(b, temp);
+}
+
+
+void tri(pVille tab) {
+    	for(char i=0; i<MAX_VILLE-1; i++){
+        	for(char j=0; j<MAX_VILLE-i-1; j++){
+            		if(strcmp(tab[j].nom,tab[j+1].nom) > 0){
+                		echanger(tab[j].nom, tab[j+1].nom);
+            		}
+        	}
+    	}
+}
+	
 
 
 
@@ -276,15 +306,27 @@ pAvl traitement(pAvl a){
 
 int main(void){
 	pAvl villeAVL = NULL;
+	int c = 0;
+	Ville tableau[MAX_VILLE];
 	
 	villeAVL = traitement(villeAVL);
 	
 	
 	if(villeAVL == NULL){
-		printf("caca\n");
+		printf("L'avl est vide !!!\n");
 	}
 	
-	infixeAvl(villeAVL);
+	infixe(villeAVL);
+	
+	//infixeDecroissant10(villeAVL,&c,tableau);
+	
+	tri(tableau);
+	
+	//for(int i=0;i<MAX_VILLE;i++){
+	//	printf("%s \n",tableau[i].nom);
+	//}
+	
+	
 	
 	libererAVL(villeAVL);
 	
