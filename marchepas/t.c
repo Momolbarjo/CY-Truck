@@ -411,57 +411,31 @@ pAvl ajoutVille(pAvl a, char* nom){
 }
 
 
-pAvl traitement(pAvl a){
-	FILE* fichier1 = NULL;
-	FILE* fichier2 = NULL;
-	FILE* fichier3 = NULL;
-	FILE* fichier4 = NULL;
-	
-	fichier1 = fopen("temp/id.csv","r");
-	fichier2 = fopen("temp/step.csv","r");
-	fichier3 = fopen("temp/depart.csv","r");
-	fichier4 = fopen("temp/arrive.csv","r");
-	
-	if(fichier1 == NULL || fichier2 == NULL || fichier3 == NULL || fichier4 == NULL){
-		printf("c'est la merde là");
-		exit(EXIT_FAILURE);
-	}
-	
-	char nom1[TAILLE], nom2[TAILLE], verif, step_[2], step, routeid_[ROUTE];
-	unsigned short routeid;
-	
-	while(fgets(routeid_, ROUTE, fichier1) != NULL && fgets(step_, 2, fichier2) != NULL && fgets(nom1, TAILLE, fichier3) != NULL && fgets(nom2, TAILLE, fichier4) != NULL){
-    step = atoi(step_);
-    routeid = atoi(routeid_);
+// ... (Autres déclarations et fonctions) ...
 
-    verif = 0;
+pAvl traitementEtTopVilles() {
+    pAvl villeAVL = NULL;
+    FILE* fichier1 = fopen("temp/id.csv", "r");
+    FILE* fichier2 = fopen("temp/step.csv", "r");
+    FILE* fichier3 = fopen("temp/depart.csv", "r");
+    FILE* fichier4 = fopen("temp/arrive.csv", "r");
 
-    if(step == 1){
-        verif = recherche(&a, nom1, 1, routeid);
-        if(verif != 1){
-            a = ajoutVille(a, nom1);
-        }
-    } else {
-        verif = recherche(&a, nom1, 0, routeid);
-        if(verif != 1){
-            a = ajoutVille(a, nom1);
-        }   
+    if (fichier1 == NULL || fichier2 == NULL || fichier3 == NULL || fichier4 == NULL) {
+        printf("Erreur lors de l'ouverture des fichiers.\n");
+        exit(EXIT_FAILURE);
     }
 
-    verif = recherche(&a, nom2, 0, routeid);
-    if(verif != 1){
-        a = ajoutVille(a, nom2);
-    }   
-}
-	
-	fclose(fichier1);
-	fclose(fichier2);
-	fclose(fichier3);
-	fclose(fichier4);
-	
-	return a;
-}
+    while (!feof(fichier1)) {
+        traiterLot(&villeAVL, fichier1, fichier2, fichier3, fichier4);
+    }
 
+    fclose(fichier1);
+    fclose(fichier2);
+    fclose(fichier3);
+    fclose(fichier4);
+
+    return villeAVL;
+}
 
 // Utilitaire pour comparer deux villes
 int comparerVilles(const void *a, const void *b) {
@@ -508,24 +482,16 @@ void extraireTopVilles(pAvl monAvl, Ville topVilles[10]) {
 
 
 int main(void) {
-    
-    pAvl villeAVL = NULL;
+    pAvl villeAVL = traitementEtTopVilles();
 
-    
-    villeAVL = traitement(villeAVL);
-
-    
     Ville topVilles[10];
     extraireTopVilles(villeAVL, topVilles);
 
-    
     printf("Top 10 des villes les plus traversées :\n");
     for (int i = 0; i < 10; i++) {
         printf("%s - Total Traversées: %hu, Départs: %hu\n", topVilles[i].nom, topVilles[i].nb_fois, topVilles[i].nb_depart);
     }
 
-   
     libererAVL(villeAVL);
-
     return 0;
 }
