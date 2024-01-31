@@ -1,0 +1,32 @@
+#!/bin/bash
+
+debut=$(date +%s)
+fichier=$1
+
+awk -F';' '
+{
+    id_trajet=$1
+    ville_depart=$3
+    ville_arrivee=$4
+    
+    if(!id_trajet in trajet_vu){
+        trajet_vu[id_trajet] = 1
+        total[ville_depart]++
+        total[ville_arrivee]++
+    }
+    
+    if($2 == 1){
+        depart[ville_depart]++
+    }
+}
+END{
+    for(ville in total){
+        printf "%s,%d,%d\n", ville, total[ville], depart[ville]
+    }
+}' $fichier >"resultat.csv"
+
+fin=$(date +%s)
+duree=$((fin - debut))
+echo "Temps d'exécution : $duree secondes"
+
+exit 0
