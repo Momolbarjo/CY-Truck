@@ -461,18 +461,26 @@ void extraireTopVilles(pAvl monAvl, Ville topVilles[10]) {
 
 // MAIN :
 
-int main(void){
-	pAvl villeAVL = NULL;
-	
-	villeAVL = traitement(villeAVL);
-	
-	if(villeAVL == NULL){
-		printf("caca\n");
-	}
-	
-	infixeAvl(villeAVL);
-	
-	libererAVL(villeAVL);
-	
-	return 0;
+
+int main(void) {
+    
+    pAvl villeAVL = NULL;
+
+    
+    villeAVL = traitement(villeAVL);
+
+    
+    Ville topVilles[10];
+    extraireTopVilles(villeAVL, topVilles);
+
+    
+    printf("Top 10 des villes les plus traversées :\n");
+    for (int i = 0; i < 10; i++) {
+        printf("%s - Total Traversées: %hu, Départs: %hu\n", topVilles[i].nom, topVilles[i].nb_fois, topVilles[i].nb_depart);
+    }
+
+   
+    libererAVL(villeAVL);
+
+    return 0;
 }
