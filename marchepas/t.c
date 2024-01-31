@@ -328,28 +328,28 @@ void libererAVL(pAvl monAvl){
 
 
 int recherche(pAvl *monAvl, char *nom, char type, unsigned short route) {
-    if (*monAvl == NULL) {
+    if (monAvl == NULL) {
         // Si la ville n'est pas trouvée, créez-la et ajoutez-la à l'AVL
         pVille nouvelleVille = creerVille(nom);
         if (type == 1) {
             nouvelleVille->nb_depart = 1;
         }
         nouvelleVille->nb_fois = 1;
-        *monAvl = ajoutAVL(*monAvl, nouvelleVille);
+        monAvl = ajoutAVL(monAvl, nouvelleVille);
         return 1; // Nouvelle ville ajoutée
     } else {
-        if (strcmp((*monAvl)->elt->nom, nom) == 0) {
+        if (strcmp((monAvl)->elt->nom, nom) == 0) {
             // Si la ville existe déjà, mettez à jour ses données
             if (type == 1) {
-                (*monAvl)->elt->nb_depart++;
+                (monAvl)->elt->nb_depart++;
             }
             (*monAvl)->elt->nb_fois++;
             return 0; // Ville existante mise à jour
         }
-        if (strcmp(nom, (*monAvl)->elt->nom) < 0) {
-            return recherche(&(*monAvl)->fg, nom, type, route);
+        if (strcmp(nom, (monAvl)->elt->nom) < 0) {
+            return recherche(&(monAvl)->fg, nom, type, route);
         } else {
-            return recherche(&(*monAvl)->fd, nom, type, route);
+            return recherche(&(monAvl)->fd, nom, type, route);
         }
     }
 }
@@ -366,7 +366,7 @@ pAvl ajoutVille(pAvl a, char* nom){
 
 // ... (Autres déclarations et fonctions) ...
 
-void traiterLot(pAvl *villeAVL, FILE* fichier1, FILE* fichier2, FILE* fichier3, FILE* fichier4) {
+void traiterLot(pAvl villeAVL, FILE* fichier1, FILE* fichier2, FILE* fichier3, FILE* fichier4) {
     char nom1[TAILLE], nom2[TAILLE], verif, step_[2], step, routeid_[ROUTE];
     unsigned short routeid;
     int compteur = 0;
@@ -385,18 +385,18 @@ void traiterLot(pAvl *villeAVL, FILE* fichier1, FILE* fichier2, FILE* fichier3, 
         if (step == 1) {
             verif = recherche(villeAVL, nom1, 1, routeid);
             if (verif != 1) {
-                *villeAVL = ajoutVille(*villeAVL, nom1);
+                villeAVL = ajoutVille(villeAVL, nom1);
             }
         } else {
             verif = recherche(villeAVL, nom1, 0, routeid);
             if (verif != 1) {
-                *villeAVL = ajoutVille(*villeAVL, nom1);
+                villeAVL = ajoutVille(villeAVL, nom1);
             }
         }
 
         verif = recherche(villeAVL, nom2, 0, routeid);
         if (verif != 1) {
-            *villeAVL = ajoutVille(*villeAVL, nom2);
+            villeAVL = ajoutVille(villeAVL, nom2);
         }
 
         compteur++;
