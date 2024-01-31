@@ -3,24 +3,29 @@
 debut=$(date +%s)
 fichier=$1
 
-awk -F';' '
-{
+awk -F';' '{
     id_trajet=$1
     ville_depart=$3
     ville_arrivee=$4
-    
-    if(!id_trajet in trajet_vu){
-        trajet_vu[id_trajet] = 1
+
+    # Marquer les villes pour ce trajet s'ils n'ont pas déjà été vus
+    if (!(id_trajet SUBSEP ville_depart in trajet_ville_vu)) {
         total[ville_depart]++
-        total[ville_arrivee]++
+        trajet_ville_vu[id_trajet, ville_depart]
     }
-    
-    if($2 == 1){
+
+    if (!(id_trajet SUBSEP ville_arrivee in trajet_ville_vu)) {
+        total[ville_arrivee]++
+        trajet_ville_vu[id_trajet, ville_arrivee]
+    }
+
+    # Compter les départs seulement pour la première étape
+    if ($2 == 1) {
         depart[ville_depart]++
     }
 }
-END{
-    for(ville in total){
+END {
+    for (ville in total) {
         printf "%s,%d,%d\n", ville, total[ville], depart[ville]
     }
 }' $fichier >"resultat.csv"
@@ -28,5 +33,3 @@ END{
 fin=$(date +%s)
 duree=$((fin - debut))
 echo "Temps d'exécution : $duree secondes"
-
-exit 0
