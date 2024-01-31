@@ -1,3 +1,29 @@
+/*
+TRAITEMENT [T] : les 10 villes les plus traversées : option -t
+Pour ce traitement, vous compterez le nombre de trajets qui parcourent
+chaque ville, ainsi que le nombre de fois où ces villes ont été des villes de
+départ de trajets.
+Une ville n’est traversée qu’une seule fois par trajet, mais forcément elle
+peut apparaître deux fois dans les données, une fois comme ville de
+départ d’une étape, et une autre fois comme ville d’arrivée de l’étape
+précédente. Il vous faudra gérer ce cas un peu particulier.
+A la fin du traitement, vous ne conserverez que les 10 premières villes
+avec le plus de trajets, par ordre alphabétique.
+Votre programme devra créer un graphique de type histogramme
+regroupé. On retrouvera en abscisse les noms des villes, par ordre
+alphabétique, et en ordonnée le nombre de trajets.
+Pour chaque ville, il y aura 2 barres verticales, celle de gauche indiquera
+le nombre de trajets total qui traversent cette ville, et celle de droite le
+nombre de fois où cette ville est la ville de départ d’un trajet.
+ Attention :
+Si vous tentez de réaliser ce traitement uniquement à l’aide d’un script
+Shell et de commandes Unix, vous ne recevrez aucun point pour le
+traitement lui-même (mais vous pourrez avoir les points sur la partie
+graphique si l’image est générée correctement malgré tout). Il est donc
+obligatoire de passer par un programme C pour effectuer le tri des
+données : l’utilisation d’une structure de type AVL est obligatoire. Aucune
+commande Unix de type ‘sort’ ne doit être appelée ici.*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
