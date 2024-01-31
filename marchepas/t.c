@@ -22,7 +22,57 @@ traitement lui-même (mais vous pourrez avoir les points sur la partie
 graphique si l’image est générée correctement malgré tout). Il est donc
 obligatoire de passer par un programme C pour effectuer le tri des
 données : l’utilisation d’une structure de type AVL est obligatoire. Aucune
-commande Unix de type ‘sort’ ne doit être appelée ici.*/
+commande Unix de type ‘sort’ ne doit être appelée ici.
+t.c:391:43: warning: passing argument 1 of ‘recherche’ from incompatible pointer type [-Wincompatible-pointer-types]
+  391 |                         verif = recherche(nom1,a,1,routeid);
+      |                                           ^~~~
+      |                                           |
+      |                                           char *
+t.c:327:21: note: expected ‘struct Avl **’ but argument is of type ‘char *’
+  327 | int recherche(pAvl *monAvl, char *nom, char type, unsigned short route) {
+      |               ~~~~~~^~~~~~
+t.c:391:48: warning: passing argument 2 of ‘recherche’ from incompatible pointer type [-Wincompatible-pointer-types]
+  391 |                         verif = recherche(nom1,a,1,routeid);
+      |                                                ^
+      |                                                |
+      |                                                pAvl {aka struct Avl *}
+t.c:327:35: note: expected ‘char *’ but argument is of type ‘pAvl’ {aka ‘struct Avl *’}
+  327 | int recherche(pAvl *monAvl, char *nom, char type, unsigned short route) {
+      |                             ~~~~~~^~~
+t.c:399:43: warning: passing argument 1 of ‘recherche’ from incompatible pointer type [-Wincompatible-pointer-types]
+  399 |                         verif = recherche(nom1,a,0,routeid);
+      |                                           ^~~~
+      |                                           |
+      |                                           char *
+t.c:327:21: note: expected ‘struct Avl **’ but argument is of type ‘char *’
+  327 | int recherche(pAvl *monAvl, char *nom, char type, unsigned short route) {
+      |               ~~~~~~^~~~~~
+t.c:399:48: warning: passing argument 2 of ‘recherche’ from incompatible pointer type [-Wincompatible-pointer-types]
+  399 |                         verif = recherche(nom1,a,0,routeid);
+      |                                                ^
+      |                                                |
+      |                                                pAvl {aka struct Avl *}
+t.c:327:35: note: expected ‘char *’ but argument is of type ‘pAvl’ {aka ‘struct Avl *’}
+  327 | int recherche(pAvl *monAvl, char *nom, char type, unsigned short route) {
+      |                             ~~~~~~^~~
+t.c:406:35: warning: passing argument 1 of ‘recherche’ from incompatible pointer type [-Wincompatible-pointer-types]
+  406 |                 verif = recherche(nom2,a,0,routeid);
+      |                                   ^~~~
+      |                                   |
+      |                                   char *
+t.c:327:21: note: expected ‘struct Avl **’ but argument is of type ‘char *’
+  327 | int recherche(pAvl *monAvl, char *nom, char type, unsigned short route) {
+      |               ~~~~~~^~~~~~
+t.c:406:40: warning: passing argument 2 of ‘recherche’ from incompatible pointer type [-Wincompatible-pointer-types]
+  406 |                 verif = recherche(nom2,a,0,routeid);
+      |                                        ^
+      |                                        |
+      |                                        pAvl {aka struct Avl *}
+t.c:327:35: note: expected ‘char *’ but argument is of type ‘pAvl’ {aka ‘struct Avl *’}
+  327 | int recherche(pAvl *monAvl, char *nom, char type, unsigned short route) {
+      |                             ~~~~~~^~~
+
+*/
 
 #include <stdlib.h>
 #include <stdio.h>
