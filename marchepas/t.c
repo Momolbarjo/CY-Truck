@@ -83,6 +83,7 @@ t.c:327:35: note: expected ‘char *’ but argument is of type ‘pAvl’ {aka 
 #define TAILLE 50
 #define ROUTE 7
 #define MAXI 1000
+#define MAX_VILLES 1000
 
 // DEFINITION DE LA STRUCTURE AVL :
 
