@@ -15,7 +15,7 @@ int main(void){
 		exit(EXIT_FAILURE);
 	}
 
-	// Recuperation des 10 villes les plus traversés dans l'AVL et remplissage du tableau par ces éléments
+	// Récupération des 10 villes les plus traversés dans l'AVL et remplissage du tableau par ces éléments
 	infixeDecroissant10(villeAVL,&c,tableau);
 
 	// Tri du tableau dans l'ordre alphabétique
