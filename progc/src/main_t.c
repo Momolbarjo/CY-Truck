@@ -1,7 +1,7 @@
 #include "all.h"
 
 int main(void){
-	pAvl villeAVL = NULL;
+	pAvl_t villeAVL = NULL;
 	int c = 0;
 	Ville tableau[MAX_VILLE];
 	
@@ -21,9 +21,7 @@ int main(void){
 		printf("%s;%hu;%hu\n",tableau[i].nom,tableau[i].nb_fois,tableau[i].nb_depart);
 	}
 	
-	
-	libererAVL(villeAVL);
-	
-	
+	libererAVL_t(villeAVL);
+		
 	return 0;
 }
