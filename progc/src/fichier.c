@@ -52,5 +52,26 @@ Ville extraireDonneeCSV_2(char *ligne) {
     	return ville;
 }
 
+pAvl_t traitement(pAvl_t a){
+	FILE* fichier = NULL;
+	char chaine[TAILLE];
+	Ville ville;
+	fichier = fopen("temp/t1.csv","r");
+	
+	if(fichier == NULL){
+		fprintf(stderr,"Erreur lors de l'ouverture du fichier t1.csv ! \n");
+		exit(EXIT_FAILURE);
+	}
+	   
+	while(fgets(chaine, TAILLE, fichier) != NULL){
+        	ville = extraireDonneeCSV_2(chaine);
+        	a = ajoutAVL_t(a, ville);
+    	}
+    	
+    	fclose(fichier);
+	
+	return a;	
+}
+
 
 
