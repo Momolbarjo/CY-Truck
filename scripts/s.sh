@@ -11,20 +11,32 @@ sortie=temp/tmp_s2.csv
 LC_NUMERIC=C awk -F';' 'NR>1 {
     id=$1; 
     distance=$5; 
-    if (!(id in min_distances) || (distance < min_distances[id])){
-        min_distances[id] = distance
+    
+    if ((id in minimum) == 0 || (distance < minimum[id]))
+    {
+        minimum[id] = distance
     }
-    if (!(id in max_distances) || distance > max_distances[id]){
-        max_distances[id] = distance
+    
+    if ((id in maximum) == 0 || distance > maximum[id])
+    {
+        maximum[id] = distance
     } 
-    total_distances[id] += distance;
-    counts[id]++; 
+    
+    total[id] += distance;
+    compte[id]++; 
 } 
 END {
-    for (id in counts) {
-        average_distance = (counts[id] > 0) ? total_distances[id] / counts[id] : 0;
-        diff_min_max = max_distances[id] - min_distances[id];
-        printf "%s\t%.3f\t%.3f\t%.3f\t%.3f\n", id, min_distances[id]+0, max_distances[id]+0, diff_min_max+0, average_distance+0
+    for (id in compte) 
+    {
+        moyenne = 0;
+        
+        if (compte[id] > 0) 
+        {
+            moyenne = total[id] / compte[id];
+        }
+        
+        diff_min_max = maximum[id] - minimum[id];
+        printf "%s\t%.3f\t%.3f\t%.3f\t%.3f\n", id, minimum[id], maximum[id], diff_min_max, moyenne
     }
 }' "$fichier" > "temp/tmp_s1.csv"
 
