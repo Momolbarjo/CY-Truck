@@ -375,3 +375,32 @@ void libererAVL(pAvl_t monAvl){
 	}
 }
 
+void echanger(pVille a, pVille b) {
+    	pVille temp = (pVille)malloc(sizeof(Ville));
+    	
+    	strcpy(temp->nom,a->nom);
+    	temp->nb_fois = a->nb_fois;
+    	temp->nb_depart = a->nb_depart;
+    	
+    	strcpy(a->nom,b->nom);
+    	a->nb_fois = b->nb_fois;
+    	a->nb_depart = b->nb_depart;
+    	
+    	strcpy(b->nom,temp->nom);
+    	b->nb_fois = temp->nb_fois;
+    	b->nb_depart = temp->nb_depart;
+    	
+    	free(temp);
+}
+
+
+void tri(pVille tab) {
+    	pVille temp;
+    	for(char i=0; i<MAX_VILLE; i++){
+        	for(char j=0; j<MAX_VILLE-i-1; j++){
+            		if(strcmp(tab[j].nom,tab[j+1].nom) > 0){
+                		echanger(&tab[j],&tab[j+1]);
+            		}
+        	}
+    	}
+}
