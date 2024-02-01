@@ -1,8 +1,9 @@
 #!/bin/bash
 
 debut=$(date +%s)
-
+sortie=temp/data_t1.csv
 fichier=$1
+
 
 awk -F';' '{
 	id_trajet=$1
@@ -34,13 +35,16 @@ awk -F';' '{
 	}' $fichier >"temp/t1.csv"
 
 
-./t > "data_t1.csv"
+progc/src/./main_t > "temp/data_t1.csv"
 
+if [ ! -f $sortie ];then
+	exit 1
+fi
 
 gnuplot <<- EOF
     reset
     set terminal pngcairo size 1280,720
-    set output 't.png'
+    set output 'images/t.png'
     set datafile separator ';'
     set title "Option -t : Nb routes  = f(Villes)" 
     set style data histograms
@@ -54,7 +58,7 @@ gnuplot <<- EOF
     set xlabel " NOMS VILLES" font ",10"
     set term png  size 1280,720
     
-    plot 'data_t1.csv' using 2:xtic(1)  lt rgb "#406090" title 'Total routes',\
+    plot 'temp/data_t1.csv' using 2:xtic(1)  lt rgb "#406090" title 'Total routes',\
      "" using 3 lt rgb "#BDBDBD" title 'Premiere Ville '
 EOF
 
@@ -63,6 +67,6 @@ fin=$(date +%s)
 duree=$(( $fin - $debut ))
 
 echo "Temps d'exécution : $duree secondes"
-
+xdg-open images/t.png
 
 exit 0
