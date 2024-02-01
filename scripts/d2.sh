@@ -22,7 +22,7 @@ LC_NUMERIC=C awk -F';' 'NR>1{
     }
 }' $fichier | LC_NUMERIC=C sort -t':' -k1,1nr -g | head -n 10 > "$fichierdeSortie"
 
-# Affichage du graphique du traitement à l'aide de gnuplot
+# Création du graphique du traitement à l'aide de gnuplot
 gnuplot <<- EOF
     reset
     set terminal pngcairo size 1000,900
