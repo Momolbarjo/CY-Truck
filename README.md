@@ -37,7 +37,7 @@ bash main_script 'nomdevotrefichier.csv' [options]
 Pour vous authentifier, exécutez :
 
 ```
-bash others/authorization/auto.sh
+bash others/autorization/auto.sh
 ```
 
 Une fenetre s'ouvrira vous demandant d'appuyer sur une touche pour continuer. Ensuite, une fenêtre d'authentification apparaîtra pour entrer les informations suivantes :
