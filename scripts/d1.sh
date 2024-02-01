@@ -22,7 +22,7 @@ awk -F';' 'NR>1{
     }
 }' $fichier |sort -t':' -k1,1nr -g  | head > "$fichierdeSortie"
 
-# Utilisation de gnuplot pour afficher le graphique du traitement
+# Utilisation de gnuplot pour construire le graphique du traitement
 gnuplot <<- EOF
     reset
     set terminal pngcairo size 1000,900
