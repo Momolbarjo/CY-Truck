@@ -14,14 +14,14 @@
 #define MAX_VILLE 10
 
 typedef struct Ville{
-	unsigned short nb_fois;	
-	unsigned short nb_depart;
-	char nom[TAILLE];
+    unsigned short nb_fois;	
+    unsigned short nb_depart;
+    char nom[TAILLE];
 }Ville,*pVille;
 
 
 typedef struct Avl_t{
-	Ville elt;
+    Ville elt;
     char hauteur;
     char equilibre;
     struct Avl_t* fg;
