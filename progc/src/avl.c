@@ -328,7 +328,7 @@ pAvl_t equilibrerAVL_t(pAvl_t monAvl) {
 }
 
 
-pAvl_t ajoutAVL(pAvl_t monAvl, Ville maVille) {
+pAvl_t ajoutAVL_t(pAvl_t monAvl, Ville maVille) {
     	if (monAvl == NULL) {
         	return creerArbre_t(maVille);
     	}
