@@ -169,3 +169,208 @@ void libererMemoireAVL(pAvl racine) {
         free(racine);
     }
 }
+
+
+Ville creerVille(char* nom){
+	Ville nouveau;
+   	int i;
+   	
+   	nouveau.nb_fois = 0;
+	nouveau.nb_depart = 0;
+   	strcpy(nouveau.nom, nom);
+   	
+	return nouveau;
+}
+
+
+pAvl_t creerArbre_t(Ville maVille){
+	pAvl_t monAvl=(pAvl_t)malloc(sizeof(Avl_t));
+	
+    	if(monAvl==NULL){
+        	fprintf(stderr,"Erreur d'allocation mémoire pour 'monAvl' !\n");
+       		exit(EXIT_FAILURE);
+   	}
+
+    monAvl->elt = maVille;
+    monAvl->hauteur=1;
+    monAvl->fg=NULL;
+    monAvl->fd=NULL;
+	monAvl->equilibre=0;
+	
+    return monAvl;
+}
+
+
+char hauteur_t(pAvl_t monAvl){
+	
+	if(monAvl != NULL){
+		return monAvl->hauteur;
+	}
+	
+	else{
+		return 0;
+	}
+}
+
+
+void majHauteur_t(pAvl_t monAvl) {
+    if (monAvl != NULL) {
+        char hauteurG = hauteur_t(monAvl->fg);
+        char hauteurD = hauteur_t(monAvl->fd);
+
+        if (hauteurG > hauteurD) {
+            monAvl->hauteur = hauteurG + 1;
+        } else {
+            monAvl->hauteur = hauteurD + 1;
+        }
+    }
+}
+
+
+pAvl_t rotationDroite_t(pAvl_t monAvl) {
+    	if (monAvl == NULL || monAvl->fg == NULL) {
+        	return monAvl;
+    	}
+
+    	pAvl A = monAvl->fg;
+    	
+    	if (A->fd == NULL) {
+        	return monAvl;
+    	}
+
+    	pAvl B = A->fd;
+
+    	A->fd = monAvl;
+    	monAvl->fg = B;
+
+    	majHauteur_t(monAvl);
+    	majHauteur_t(A);
+
+    	return A;
+}
+
+
+pAvl_t rotationGauche_t(pAvl_t monAvl) {
+    	if (monAvl == NULL || monAvl->fd == NULL) {
+        	return monAvl;
+    	}
+
+    	pAvl A = monAvl->fd;
+    	
+    	if (A->fg == NULL) {
+        	return monAvl;
+    	}
+
+    	pAvl B = A->fg;
+
+    	A->fg = monAvl;
+    	monAvl->fd = B;
+
+    	majHauteur_t(monAvl);
+    	majHauteur_t(A);
+
+    	return A;
+}
+
+
+
+char equilibre_t(pAvl_t monAvl){
+	if(monAvl != NULL){
+		return hauteur_t(monAvl->fg) - hauteur_t(monAvl->fd);
+	}
+	
+	else{
+		return 0;
+	}
+}
+
+
+pAvl_t doubleRotationGauche_t(pAvl_t monAvl){
+    	monAvl->fd = rotationDroite_t(monAvl->fd);
+    	return rotationGauche_t(monAvl);
+}
+
+
+pAvl_t doubleRotationDroite_t(pAvl_t monAvl){
+	    monAvl->fg = rotationGauche_t(monAvl->fg);
+        return rotationDroite_t(monAvl);
+}
+
+
+pAvl_t equilibrerAVL_t(pAvl_t monAvl) {
+    	if (monAvl == NULL){
+        	return NULL;
+    	}
+
+    	if (monAvl->equilibre >= 2){
+        	if (monAvl->fd != NULL && monAvl->fd->equilibre >= 0){
+            		return rotationGauche_t(monAvl);
+        	} 
+        
+        
+        	else{
+            		return doubleRotationGauche_t(monAvl);
+    		} 
+    	}
+    	
+    	else if (monAvl->equilibre <= -2) {
+        	
+        	if (monAvl->fg != NULL && monAvl->fg->equilibre <= 0) {
+            		return rotationDroite_t(monAvl);
+        	} 
+        
+        	else {
+            		return doubleRotationDroite_t(monAvl);
+        	}
+    	}
+    
+    	return monAvl;
+}
+
+
+pAvl_t ajoutAVL(pAvl_t monAvl, Ville maVille) {
+    	if (monAvl == NULL) {
+        	return creerArbre_t(maVille);
+    	}
+
+    	if (maVille.nb_fois < monAvl->elt.nb_fois) {
+       	 	monAvl->fg = ajoutAVL_t(monAvl->fg, maVille);
+    	} 
+    	
+    	else if (maVille.nb_fois >= monAvl->elt.nb_fois) {
+        	monAvl->fd = ajoutAVL_t(monAvl->fd, maVille);
+    	}
+	
+    	monAvl->equilibre = equilibre_t(monAvl);
+
+    	return equilibrerAVL_t(monAvl);
+}
+
+
+void infixeDecroissant10(pAvl_t monAvl, int* compteur, Ville tab[MAX_VILLE]) {
+    	if (monAvl != NULL && *compteur < MAX_VILLE) {
+        	
+        	if (monAvl->fd != NULL) {
+            		infixeDecroissant10(monAvl->fd, compteur, tab);
+        	}
+        
+        	if(*compteur < MAX_VILLE){
+        		tab[*compteur] = monAvl->elt;
+        		(*compteur) ++;
+        	}
+        	
+        	if (monAvl->fg != NULL && *compteur < MAX_VILLE) {
+            		infixeDecroissant10(monAvl->fg, compteur, tab);
+        	}
+    	}
+}
+
+
+void libererAVL(pAvl_t monAvl){
+	if(monAvl != NULL){
+		libererAVL_t(monAvl->fg);
+		libererAVL_t(monAvl->fd);
+		free(monAvl);
+	}
+}
+
