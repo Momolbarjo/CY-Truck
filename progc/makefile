@@ -1,6 +1,6 @@
 INCLUDE_DIR = include
 
-all: executable1 executable2 executable 3 main_script_permissions
+all: executable1 executable2 executable3 main_script_permissions
 
 executable1: src/noEnter.c src/fichier.c
 	gcc -o src/noEnter src/noEnter.c src/fichier.c -I$(INCLUDE_DIR)
