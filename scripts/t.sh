@@ -29,7 +29,6 @@ awk -F';' '{
       		for(ville in total){
       			printf"%s,%d,%d\n",ville,total[ville],depart[ville]
       			 
-
 	  }
 	 
 	}' $fichier >"temp/t1.csv"
