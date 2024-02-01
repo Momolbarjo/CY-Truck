@@ -1,5 +1,8 @@
 #include "all.h"
 
+//Fichier comportant toutes les fonctions essentielles à l'utilisation des AVL
+
+//Fonction qui créer un neud d'AVL (pour le -s)
 pAvl creerArbre(Donnee donnee) {
     pAvl fils = malloc(sizeof(Avl));
     if (fils == NULL) {
@@ -14,6 +17,7 @@ pAvl creerArbre(Donnee donnee) {
     return fils;
 }
 
+//Fonction qui calcule la hauteur d'un noeud de l'AVL (pour le -s)
 char hauteur(pAvl monAvl) {
     if (monAvl != NULL) {
         return monAvl->hauteur;
@@ -23,6 +27,7 @@ char hauteur(pAvl monAvl) {
     }
 }
 
+//Fonction qui met à jour la hauteur d'un noeud de l'AVL (pour le -s)
 void majHauteur(pAvl monAvl) {
     if (monAvl != NULL) {
         char hauteurG = hauteur(monAvl->fg);
@@ -37,6 +42,7 @@ void majHauteur(pAvl monAvl) {
     }
 }
 
+//Fonction qui effectue une rotation droite d'un noeud de l'AVL (pour l'équilibrage) (pour le -s)
 pAvl rotationDroite(pAvl monAvl) {
     if (monAvl == NULL || monAvl->fg == NULL) {
         return monAvl;
@@ -59,6 +65,7 @@ pAvl rotationDroite(pAvl monAvl) {
     return A;
 }
 
+//Fonction qui effectue une rotation gauche d'un noeud de l'AVL (pour l'équilibrage) (pour le -s)
 pAvl rotationGauche(pAvl monAvl) {
     if (monAvl == NULL || monAvl->fd == NULL) {
         return monAvl;
@@ -81,6 +88,7 @@ pAvl rotationGauche(pAvl monAvl) {
     return A;
 }
 
+//Fonction qui calcule l'équilibre d'un noeud d'AVL (pour le -s)
 char equilibre(pAvl monAvl) {
     if (monAvl != NULL) {
         return hauteur(monAvl->fg) - hauteur(monAvl->fd);
@@ -90,16 +98,19 @@ char equilibre(pAvl monAvl) {
     }
 }
 
+//Fonction qui effectue une double rotation gauche d'un noeud de l'AVL (pour l'équilibrage) (pour le -s)
 pAvl doubleRotationGauche(pAvl monAvl) {
     monAvl->fd = rotationDroite(monAvl->fd);
     return rotationGauche(monAvl);
 }
 
+//Fonction qui effectue une double rotation droite d'un noeud de l'AVL (pour l'équilibrage) (pour le -s)
 pAvl doubleRotationDroite(pAvl monAvl) {
     monAvl->fg = rotationGauche(monAvl->fg);
     return rotationDroite(monAvl);
 }
 
+//Fonction qui équilibre un noeud de l'AVL (utilisation des rotations) (pour le -s)
 pAvl equilibrerAVL(pAvl monAvl) {
     if (monAvl == NULL) {
         return NULL;
@@ -124,6 +135,7 @@ pAvl equilibrerAVL(pAvl monAvl) {
     return monAvl;
 }
 
+//Fonction qui insère un nouveau noeud dans un AVL (pour le -s)
 pAvl insererNoeudAVL(pAvl racine, Donnee donnee) {
     if (racine == NULL) {
         return creerArbre(donnee);
@@ -144,6 +156,7 @@ pAvl insererNoeudAVL(pAvl racine, Donnee donnee) {
     return equilibrerAVL(racine);
 }
 
+//Fonction qui cronstruit l'AVL comportant les données du traitement effectué (pour le -s)
 pAvl construireAVL(FILE *Fichier) {
     if (Fichier == NULL) {
         fprintf(stderr, "Erreur lors de l'ouverture du fichier");
@@ -162,6 +175,7 @@ pAvl construireAVL(FILE *Fichier) {
     return racine;
 }
 
+//Fonction qui libère la mémoire alloué d'un noeud d'AVL (pour le -s)
 void libererMemoireAVL(pAvl racine) {
     if (racine != NULL) {
         libererMemoireAVL(racine->fg);
@@ -170,7 +184,7 @@ void libererMemoireAVL(pAvl racine) {
     }
 }
 
-
+//Fonction qui créer un élément de la structure Ville (pour le -t)
 Ville creerVille(char* nom){
 	Ville nouveau;
    	int i;
@@ -182,7 +196,7 @@ Ville creerVille(char* nom){
 	return nouveau;
 }
 
-
+//Fonction qui créer un neud d'AVL (pour le -t)
 pAvl_t creerArbre_t(Ville maVille){
 	pAvl_t monAvl=(pAvl_t)malloc(sizeof(Avl_t));
 	
@@ -200,7 +214,7 @@ pAvl_t creerArbre_t(Ville maVille){
     return monAvl;
 }
 
-
+//Fonction qui calcule la hauteur d'un noeud de l'AVL (pour le -t)
 char hauteur_t(pAvl_t monAvl){
 	
 	if(monAvl != NULL){
@@ -213,6 +227,7 @@ char hauteur_t(pAvl_t monAvl){
 }
 
 
+//Fonction qui met à jour la hauteur d'un noeud de l'AVL (pour le -t)
 void majHauteur_t(pAvl_t monAvl) {
     if (monAvl != NULL) {
         char hauteurG = hauteur_t(monAvl->fg);
@@ -226,7 +241,7 @@ void majHauteur_t(pAvl_t monAvl) {
     }
 }
 
-
+//Fonction qui effectue une rotation droite d'un noeud de l'AVL (pour l'équilibrage) (pour le -t)
 pAvl_t rotationDroite_t(pAvl_t monAvl) {
     	if (monAvl == NULL || monAvl->fg == NULL) {
         	return monAvl;
@@ -249,7 +264,7 @@ pAvl_t rotationDroite_t(pAvl_t monAvl) {
     	return A;
 }
 
-
+//Fonction qui effectue une rotation gauche d'un noeud de l'AVL (pour l'équilibrage) (pour le -t)
 pAvl_t rotationGauche_t(pAvl_t monAvl) {
     	if (monAvl == NULL || monAvl->fd == NULL) {
         	return monAvl;
@@ -273,8 +288,8 @@ pAvl_t rotationGauche_t(pAvl_t monAvl) {
 }
 
 
-
-char equilibre_t(pAvl_t monAvl){
+// Fonction qui calcule l'équilibre d'un noeud de l'AVL (pour le -t)
+char equilibre_t(pAvl_t monAvl){ 
 	if(monAvl != NULL){
 		return hauteur_t(monAvl->fg) - hauteur_t(monAvl->fd);
 	}
@@ -283,20 +298,20 @@ char equilibre_t(pAvl_t monAvl){
 		return 0;
 	}
 }
-
-
+ 
+//Fonction qui effectue une double rotation gauche d'un noeud de l'AVL (pour l'équilibrage) (pour le -t)
 pAvl_t doubleRotationGauche_t(pAvl_t monAvl){
     	monAvl->fd = rotationDroite_t(monAvl->fd);
     	return rotationGauche_t(monAvl);
 }
 
-
+//Fonction qui effectue une double rotation droite d'un noeud de l'AVL (pour l'équilibrage) (pour le -t)
 pAvl_t doubleRotationDroite_t(pAvl_t monAvl){
 	    monAvl->fg = rotationGauche_t(monAvl->fg);
         return rotationDroite_t(monAvl);
 }
 
-
+//Fonction qui équilibre un noeud de l'AVL (utilisation des rotations) (pour le -t)
 pAvl_t equilibrerAVL_t(pAvl_t monAvl) {
     	if (monAvl == NULL){
         	return NULL;
@@ -327,7 +342,7 @@ pAvl_t equilibrerAVL_t(pAvl_t monAvl) {
     	return monAvl;
 }
 
-
+//Fonction qui ajoute un nouveau noeud dans un AVL (pour le -t)
 pAvl_t ajoutAVL_t(pAvl_t monAvl, Ville maVille) {
     	if (monAvl == NULL) {
         	return creerArbre_t(maVille);
@@ -346,6 +361,7 @@ pAvl_t ajoutAVL_t(pAvl_t monAvl, Ville maVille) {
     	return equilibrerAVL_t(monAvl);
 }
 
+// Fonction qui va lire les élément du csv créer en shell puis qui va insérer tous les éléments dans un AVL (pour le -t)
 pAvl_t traitement(pAvl_t a){
 	FILE* fichier = NULL;
 	char chaine[TAILLE];
@@ -367,8 +383,7 @@ pAvl_t traitement(pAvl_t a){
 	return a;	
 }
 
-
-
+//Fonction qui récupère les 10 villes les plus traversés dans l'AVL (pour le -t)
 void infixeDecroissant10(pAvl_t monAvl, int* compteur, Ville tab[MAX_VILLE]) {
     	if (monAvl != NULL && *compteur < MAX_VILLE) {
         	
@@ -387,7 +402,7 @@ void infixeDecroissant10(pAvl_t monAvl, int* compteur, Ville tab[MAX_VILLE]) {
     	}
 }
 
-
+//Fonction qui libère la mémoire d'un noeud de l'AVL (pour le -t)
 void libererAVL_t(pAvl_t monAvl){
 	if(monAvl != NULL){
 		libererAVL_t(monAvl->fg);
@@ -396,6 +411,7 @@ void libererAVL_t(pAvl_t monAvl){
 	}
 }
 
+// Fonction qui échange deux éléments de type Ville (pour le -t)
 void echanger(pVille a, pVille b) {
     	pVille temp = (pVille)malloc(sizeof(Ville));
     	
@@ -414,7 +430,7 @@ void echanger(pVille a, pVille b) {
     	free(temp);
 }
 
-
+// Fonction qui tri un tableau dans l'ordre alphabétique (pour le -t)
 void tri(pVille tab) {
     	pVille temp;
     	for(char i=0; i<MAX_VILLE; i++){
