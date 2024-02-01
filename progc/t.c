@@ -273,7 +273,7 @@ pAvl traitement(pAvl a){
 
 
 void echanger(pVille a, pVille b) {
-    	pVille temp;
+    	pVille temp = (pVille)malloc(sizeof(Ville));
     	
     	strcpy(temp->nom,a->nom);
     	temp->nb_fois = a->nb_fois;
@@ -286,6 +286,8 @@ void echanger(pVille a, pVille b) {
     	strcpy(b->nom,temp->nom);
     	b->nb_fois = temp->nb_fois;
     	b->nb_depart = temp->nb_depart;
+    	
+    	free(temp);
 }
 
 
