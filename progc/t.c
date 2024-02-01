@@ -3,9 +3,10 @@
 #include <string.h>
 #include <math.h>
 
-#define TAILLE 50
+#define TAILLE 100
+#define MAX_VILLE 10
 
-// DEFINITION DE LA STRUCTURE AVL :
+// DEFINITION DE LA STRUCTURE AVL ET DE LA STRUCTURE VILLE :
 
 
 typedef struct Ville{
@@ -16,8 +17,9 @@ typedef struct Ville{
 
 
 typedef struct Avl{
-	pVille elt;
+	Ville elt;
     	char hauteur;
+    	char equilibre;
     	struct Avl* fg;
     	struct Avl* fd;
 }Avl,*pAvl;
@@ -26,32 +28,23 @@ typedef struct Avl{
 // FONCTIONS POUR LES AVL :
 
 
-pVille creerVille(char* nom, int num1, int num2){
-	pVille nouveau = (pVille)malloc(sizeof(Ville));
-
-	if(nouveau==NULL){
-        	printf("Erreur d'allocation mémoire pour 'nouveau' !\n");
-       		exit(EXIT_FAILURE);
-   	}
+Ville creerVille(char* nom){
+	Ville nouveau;
+   	int i;
    	
-   	nouveau->nb_fois = num1;
-	nouveau->nb_depart = num2;
-   	strcpy(nouveau->nom, nom);
+   	nouveau.nb_fois = 0;
+	nouveau.nb_depart = 0;
+   	strcpy(nouveau.nom, nom);
    	
 	return nouveau;
 }
 
 
-pAvl creerArbre(pVille maVille){
-    	if(maVille == NULL){
-    		printf("L'élement de type Ville donné est vide ! \n");
-    		exit(EXIT_FAILURE);
-    	}
-    	
+pAvl creerArbre(Ville maVille){
 	pAvl monAvl=(pAvl)malloc(sizeof(Avl));
 	
     	if(monAvl==NULL){
-        	printf("Erreur d'allocation mémoire pour 'monAvl' !\n");
+        	fprintf(stderr,"Erreur d'allocation mémoire pour 'monAvl' !\n");
        		exit(EXIT_FAILURE);
    	}
 
@@ -59,7 +52,8 @@ pAvl creerArbre(pVille maVille){
     	monAvl->hauteur=1;
     	monAvl->fg=NULL;
     	monAvl->fd=NULL;
-
+	monAvl->equilibre=0;
+	
     	return monAvl;
 }
 
@@ -148,68 +142,86 @@ char equilibre(pAvl monAvl){
 }
 
 
-pAvl ajoutAVL(pAvl monAvl, pVille maVille) {
-    	if(maVille == NULL){
-    		printf("L'élement de type Ville donné est vide ! \n");
-    		exit(EXIT_FAILURE);
-    	}
-    	
-    	if (monAvl == NULL) {
-        	return creerArbre(maVille);
-    	}
+pAvl doubleRotationGauche(pAvl monAvl){
+    	monAvl->fd = rotationDroite(monAvl->fd);
+    	return rotationGauche(monAvl);
+}
 
-   	 if (maVille->nb_fois < monAvl->elt->nb_fois) {
-       	 	monAvl->fg = ajoutAVL(monAvl->fg, maVille);
-    	} 
-    	
-    	else if (maVille->nb_fois >= monAvl->elt->nb_fois) {
-        	monAvl->fd = ajoutAVL(monAvl->fd, maVille);
-    	}
 
-    	majHauteur(monAvl);
+pAvl doubleRotationDroite(pAvl monAvl){
+	monAvl->fg = rotationGauche(monAvl->fg);
+    	return rotationDroite(monAvl);
+}
 
-    	char eq = equilibre(monAvl);
 
-    	if (eq > 1) {
-        	if (maVille->nb_fois < monAvl->fg->elt->nb_fois) {
-            		return rotationDroite(monAvl);
-        	} 
-        	
-        	else if (maVille->nb_fois >= monAvl->fg->elt->nb_fois) {
-            		monAvl->fg = rotationGauche(monAvl->fg);
-            		return rotationDroite(monAvl);
-        	}
+pAvl equilibrerAVL(pAvl monAvl) {
+    	if (monAvl == NULL){
+        	return NULL;
     	}
 
-    	if (eq < -1) {
-        	if (maVille->nb_fois < monAvl->fd->elt->nb_fois) {
-            		monAvl = rotationGauche(monAvl);
-            		return monAvl;
-        	} 
-        	
-        	else if (maVille->nb_fois >= monAvl->fd->elt->nb_fois) {
-            		monAvl->fd = rotationDroite(monAvl->fd);
+    	if (monAvl->equilibre >= 2){
+        	if (monAvl->fd != NULL && monAvl->fd->equilibre >= 0){
             		return rotationGauche(monAvl);
+        	} 
+        
+        
+        	else{
+            		return doubleRotationGauche(monAvl);
+    		} 
+    	}
+    	
+    	else if (monAvl->equilibre <= -2) {
+        	
+        	if (monAvl->fg != NULL && monAvl->fg->equilibre <= 0) {
+            		return rotationDroite(monAvl);
+        	} 
+        
+        	else {
+            		return doubleRotationDroite(monAvl);
         	}
     	}
-
+    
     	return monAvl;
 }
 
 
-void infixeAvl(pAvl monAvl) {
-    	if (monAvl != NULL) {
-        	if (monAvl->fg != NULL) {
-            		infixeAvl(monAvl->fg);
-        	}
-        	
-        	printf("%s %hu \n", monAvl->elt->nom, monAvl->elt->nb_fois);
+pAvl ajoutAVL(pAvl monAvl, Ville maVille) {
+    	if (monAvl == NULL) {
+        	return creerArbre(maVille);
+    	}
+
+    	if (maVille.nb_fois < monAvl->elt.nb_fois) {
+       	 	monAvl->fg = ajoutAVL(monAvl->fg, maVille);
+    	} 
+    	
+    	else if (maVille.nb_fois >= monAvl->elt.nb_fois) {
+        	monAvl->fd = ajoutAVL(monAvl->fd, maVille);
+    	}
+	
+    	monAvl->equilibre = equilibre(monAvl);
+
+    	return equilibrerAVL(monAvl);
+}
+
+
+void infixeDecroissant10(pAvl monAvl, int* compteur, Ville tab[MAX_VILLE]) {
+    	if (monAvl != NULL && *compteur < MAX_VILLE) {
         	
         	if (monAvl->fd != NULL) {
-            		infixeAvl(monAvl->fd);
+            		infixeDecroissant10(monAvl->fd, compteur, tab);
+        	}
+        
+        	if(*compteur < MAX_VILLE){
+        		tab[*compteur] = monAvl->elt;
+        		(*compteur) ++;
+        	}
+        	
+        	if (monAvl->fg != NULL && *compteur < MAX_VILLE) {
+            		infixeDecroissant10(monAvl->fg, compteur, tab);
         	}
     	}
 }
+
 
 void libererAVL(pAvl monAvl){
 	
@@ -221,102 +233,103 @@ void libererAVL(pAvl monAvl){
 }
 
 
-int recherche(char* nom, pAvl monAvl, char* test){
+// FONCTIONS DU TRAITEMENT -t :
 
-	if(monAvl != NULL){
-		if(strcmp(monAvl->elt->nom, nom) == 0){
-			return 1;
-		}
-		recherche(nom, monAvl->fg, test);
-		recherche(nom, monAvl->fd, test);
-	}				
+
+Ville extraireDonneeCSV_2(char *ligne) {
+    	Ville ville;
+    	
+    	char nombre_elem = sscanf(ligne, "%[^,],%hu,%hu", ville.nom, &(ville.nb_fois), &(ville.nb_depart));
+    	
+    	if(nombre_elem != 3){
+        	fprintf(stderr, "Erreur, le/les types de données de votre fichier CSV ne sont pas adaptés\n");
+        	exit(EXIT_FAILURE);
+    	}
+    	
+    	return ville;
 }
 
 
-void nb_apparition(pVille maVille, FILE* fichier2, FILE* fichier3){
-	unsigned short doublon = 0;
-	char chaine2[TAILLE];
-	char chaine3[TAILLE];
+pAvl traitement(pAvl a){
+	FILE* fichier = NULL;
+	char chaine[TAILLE];
+	Ville ville;
+	fichier = fopen("temp/t1.csv","r");
 	
-	fseek(fichier2,0,SEEK_SET);
-	fseek(fichier3,0,SEEK_SET);
-	
-	
-		
-	while(fgets(chaine2,TAILLE,fichier2) != NULL && fgets(chaine3,TAILLE,fichier3) != NULL){				
-		if(strcmp(maVille->nom,chaine2) == 0){
-			if(strcmp(chaine2,chaine3) != 0){
-				maVille->nb_fois ++;
-				maVille->nb_depart ++;
-			}		
-		}
-			
-		memset(chaine2, 0, sizeof(chaine2));
-		
-		if(strcmp(maVille->nom,chaine3) == 0){
-			if(strcmp(chaine2,chaine3) != 0){
-				maVille->nb_fois ++;
-			}
-		}
-			
-		memset(chaine3, 0, sizeof(chaine3));
+	if(fichier == NULL){
+		fprintf(stderr,"Erreur lors de l'ouverture du fichier t1.csv ! \n");
+		exit(EXIT_FAILURE);
 	}
+	   
+	while(fgets(chaine, TAILLE, fichier) != NULL){
+        	ville = extraireDonneeCSV_2(chaine);
+        	a = ajoutAVL(a, ville);
+    	}
+    	
+    	fclose(fichier);
 	
-	//printf("%s -> Total : %hu / Depart : %hu ;\n",maVille->nom,maVille->nb_fois,maVille->nb_depart );
+	return a;	
 }
 
 
-pAvl ajoutVille(pAvl a){
-	FILE* fichier1 = NULL;
-	FILE* fichier2 = NULL;
-	FILE* fichier3 = NULL;
-	
-	char chaine1[TAILLE];
-	char verif;
-	
-	pVille maVille = NULL;
-	
-	fichier1 = fopen("temp/ville.txt","r");
-	fichier2 = fopen("temp/depart.txt","r");
-	fichier3 = fopen("temp/arrive.txt","r");
-	
-	if(fichier1 == NULL || fichier2 == NULL || fichier3 == NULL){
-		printf("ERREUR LORS DE L'OUVERTURE D'UN FICHIER ! \n");
-		exit(1);
-	}	
-	
-	while(fgets(chaine1,TAILLE,fichier1) != NULL){
-		verif = 0;
-		recherche(chaine1,a,&verif);
-	
-		if(verif != 1){
-			maVille = creerVille(chaine1, 0, 0);
-			nb_apparition(maVille,fichier2,fichier3);
-			ajoutAVL(a,maVille);
-		}
-		else{
-			printf("%d",verif);
-		}
-	}
-	
-	fclose(fichier1);
-	fclose(fichier2);
-	fclose(fichier3);
-
-	return a;
+void echanger(pVille a, pVille b) {
+    	pVille temp;
+    	
+    	strcpy(temp->nom,a->nom);
+    	temp->nb_fois = a->nb_fois;
+    	temp->nb_depart = a->nb_depart;
+    	
+    	strcpy(a->nom,b->nom);
+    	a->nb_fois = b->nb_fois;
+    	a->nb_depart = b->nb_depart;
+    	
+    	strcpy(b->nom,temp->nom);
+    	b->nb_fois = temp->nb_fois;
+    	b->nb_depart = temp->nb_depart;
 }
+
+
+void tri(pVille tab) {
+    	pVille temp;
+    	for(char i=0; i<MAX_VILLE; i++){
+        	for(char j=0; j<MAX_VILLE-i-1; j++){
+            		if(strcmp(tab[j].nom,tab[j+1].nom) > 0){
+                		echanger(&tab[j],&tab[j+1]);
+            		}
+        	}
+    	}
+}
+	
+
 
 
 // MAIN :
 
 int main(void){
 	pAvl villeAVL = NULL;
+	int c = 0;
+	Ville tableau[MAX_VILLE];
 	
-	ajoutVille(villeAVL);
+	villeAVL = traitement(villeAVL);
 	
-	infixeAvl(villeAVL);
+	
+	if(villeAVL == NULL){
+		fprintf(stderr,"L'avl est vide !!!\n");
+		exit(EXIT_FAILURE);
+	}
+	
+	infixeDecroissant10(villeAVL,&c,tableau);
+	
+	tri(tableau);
+	
+	for(int i=0;i<MAX_VILLE;i++){
+		printf("%s;%hu;%hu\n",tableau[i].nom,tableau[i].nb_fois,tableau[i].nb_depart);
+	}
+	
+	
 	
 	libererAVL(villeAVL);
+	
 	
 	return 0;
 }
