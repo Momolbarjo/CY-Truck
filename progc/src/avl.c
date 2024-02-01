@@ -232,13 +232,13 @@ pAvl_t rotationDroite_t(pAvl_t monAvl) {
         	return monAvl;
     	}
 
-    	pAvl A = monAvl->fg;
+    	pAvl_t A = monAvl->fg;
     	
     	if (A->fd == NULL) {
         	return monAvl;
     	}
 
-    	pAvl B = A->fd;
+    	pAvl_t B = A->fd;
 
     	A->fd = monAvl;
     	monAvl->fg = B;
@@ -255,13 +255,13 @@ pAvl_t rotationGauche_t(pAvl_t monAvl) {
         	return monAvl;
     	}
 
-    	pAvl A = monAvl->fd;
+    	pAvl_t A = monAvl->fd;
     	
     	if (A->fg == NULL) {
         	return monAvl;
     	}
 
-    	pAvl B = A->fg;
+    	pAvl_t B = A->fg;
 
     	A->fg = monAvl;
     	monAvl->fd = B;
