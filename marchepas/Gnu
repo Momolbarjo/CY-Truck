@@ -1,4 +1,4 @@
-```gnuplot <<- EOF
+gnuplot <<- EOF
     reset
     set terminal pngcairo size 1280,720
     set output 't.png'
@@ -18,4 +18,4 @@
     plot 'data_t_1.dat' using 2:xtic(1)  lt rgb "#406090" title 'Total routes',\
      "" using 3 lt rgb "#BDBDBD" title 'Premiere Ville '
 EOF
-```
+
