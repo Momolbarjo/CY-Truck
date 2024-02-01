@@ -22,7 +22,6 @@ int main(void){
 	}
 	
 	
-	
 	libererAVL(villeAVL);
 	
 	
