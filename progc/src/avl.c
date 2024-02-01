@@ -347,6 +347,28 @@ pAvl_t ajoutAVL_t(pAvl_t monAvl, Ville maVille) {
 }
 
 
+pAvl_t traitement(pAvl_t a){
+	FILE* fichier = NULL;
+	char chaine[TAILLE];
+	Ville ville;
+	fichier = fopen("temp/t1.csv","r");
+	
+	if(fichier == NULL){
+		fprintf(stderr,"Erreur lors de l'ouverture du fichier t1.csv ! \n");
+		exit(EXIT_FAILURE);
+	}
+	   
+	while(fgets(chaine, TAILLE, fichier) != NULL){
+        	ville = extraireDonneeCSV_2(chaine);
+        	a = ajoutAVL_t(a, ville);
+    	}
+    	
+    	fclose(fichier);
+	
+	return a;	
+}
+
+
 void infixeDecroissant10(pAvl_t monAvl, int* compteur, Ville tab[MAX_VILLE]) {
     	if (monAvl != NULL && *compteur < MAX_VILLE) {
         	
