@@ -1,7 +1,7 @@
 #!/bin/bash
 
-
 debut=$(date +%s)
+
 fichier=$1
 
 awk -F';' '{
@@ -31,7 +31,32 @@ awk -F';' '{
 
 	  }
 	 
-	}' $fichier >"tmp_t1.csv"
+	}' $fichier >"temp/t1.csv"
+
+
+./t > "data_t1.csv"
+
+
+gnuplot <<- EOF
+    reset
+    set terminal pngcairo size 1280,720
+    set output 't.png'
+    set datafile separator ';'
+    set title "Option -t : Nb routes  = f(Villes)" 
+    set style data histograms
+    set boxwidth 1.8 
+    set style fill solid 
+    set yrange [ 0 : * ]
+    set xtics  font ",9"
+    set xtics  rotate by -45
+    set ytics font ",9"
+    set ylabel "NB ROUTES " font ",10"
+    set xlabel " NOMS VILLES" font ",10"
+    set term png  size 1280,720
+    
+    plot 'data_t1.csv' using 2:xtic(1)  lt rgb "#406090" title 'Total routes',\
+     "" using 3 lt rgb "#BDBDBD" title 'Premiere Ville '
+EOF
 
 
 fin=$(date +%s)
