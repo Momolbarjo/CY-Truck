@@ -3,6 +3,7 @@
 // main du programme C du traitement -s
 int main(void) {
 
+    //Initialisation des variables
     FILE* entree = NULL;
     FILE* sortie = NULL;
     entree = fopen("temp/tmp_s1.csv","r"); //Ouverture du fichier d'entrée
