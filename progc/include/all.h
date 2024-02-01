@@ -7,6 +7,26 @@
 #include <string.h>
 #include <unistd.h>
 #include <termios.h>
+#include <math.h>
+
+
+#define TAILLE 100
+#define MAX_VILLE 10
+
+typedef struct Ville{
+	unsigned short nb_fois;	
+	unsigned short nb_depart;
+	char nom[TAILLE];
+}Ville,*pVille;
+
+
+typedef struct Avl_t{
+	Ville elt;
+    char hauteur;
+    char equilibre;
+    struct Avl_t* fg;
+    struct Avl_t* fd;
+}Avl_t,*pAvl_t;
 
 typedef struct Donnee {
     unsigned int id;
@@ -39,5 +59,23 @@ pAvl equilibrerAVL(pAvl myAvl);
 pAvl insererNoeudAVL(pAvl racine, Donnee donnee);
 pAvl construireAVL(FILE *Fichier);
 void libererMemoireAVL(pAvl racine);
+
+Ville creerVille(char* nom);
+pAvl_t creerArbre_t(Ville maVille);
+char hauteur_t(pAvl_t monAvl);
+void majHauteur_t(pAvl_t monAvl);
+pAvl_t rotationDroite_t(pAvl_t monAvl);
+pAvl_t rotationGauche_t(pAvl_t monAvl);
+char equilibre_t(pAvl_t monAvl);
+pAvl_t doubleRotationGauche_t(pAvl_t monAvl);
+pAvl_t doubleRotationDroite_t(pAvl_t monAvl);
+pAvl_t equilibrerAVL_t(pAvl_t monAvl);
+pAvl_t ajoutAVL_t(pAvl_t monAvl, Ville maVille);
+void infixeDecroissant10(pAvl_t monAvl, int* compteur, Ville tab[MAX_VILLE]);
+void libererAVL_t(pAvl_t monAvl);
+Ville extraireDonneeCSV_2(char *ligne);
+pAvl_t traitement(pAvl_t a);
+void echanger(pVille a, pVille b);
+void tri(pVille tab); 
 
 #endif
