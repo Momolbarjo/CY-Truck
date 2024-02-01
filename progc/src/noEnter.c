@@ -2,7 +2,7 @@
 
 int main(void){
 
-	char c=getch();
+	char c=getch(); // récupération d'un caractère
 	
 	return 0;
 }
