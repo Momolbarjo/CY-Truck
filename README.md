@@ -32,7 +32,7 @@ bash main_script 'nomdevotrefichier.csv' [options]
 
 
 ### Authentification avec Zenity
-À la première utilisation, une procédure d'authentification est requise. CY-TRUCK utilise **Zenity** pour une expérience utilisateur graphique améliorée, facilitant l'entrée sécurisée des informations d'authentification.
+À la première utilisation, une procédure d'authentification est requise. CY-TRUCK utilise **Zenity** facilitant l'entrée sécurisée des informations d'authentification.
 
 Pour vous authentifier, exécutez :
 
