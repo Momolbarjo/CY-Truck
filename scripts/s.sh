@@ -1,9 +1,13 @@
 #!/bin/bash
 
-fichier=$1
-sortie=temp/tmp_s2.csv
+# Début du chronomètre du temps d'éxécution
 debut=$(date +%s)
 
+# Affectations des arguments
+fichier=$1
+sortie=temp/tmp_s2.csv
+
+# Traitement de data.csv avec l'utilisation de AWK
 LC_NUMERIC=C awk -F';' 'NR>1 {
     id=$1; 
     distance=$5; 
@@ -24,12 +28,15 @@ END {
     }
 }' "$fichier" > "temp/tmp_s1.csv"
 
+# Execution du programme en C utilisant le fichier créé précédemment avec le AWK
 progc/src/./main_s
 
+# Verification du fichier de sortie
 if [ ! -f $sortie ];then
 	exit 1
 fi
 
+# Création du graphique du traitement effectué
 gnuplot <<- EOF
     reset
     set terminal pngcairo size 1920,1080
@@ -47,9 +54,12 @@ gnuplot <<- EOF
                        
 EOF
 
+# Fin et affichage du chronomètre (temps d'éxécution)
 fin=$(date +%s)
 duree=$(( $fin - $debut ))
 echo "Temps d'exécution : $duree secondes"
+
+# Affichage du graphique
 xdg-open images/s.png
 
 exit 0
