@@ -1,10 +1,13 @@
 #!/bin/bash
 
+# Mesure du temps éxécution
 debut=$(date +%s)
 
+# Affectations des arguments
 fichier=$1
 fichierdeSortie="temp/tmp_l.csv"
 
+# Traitement de data.csv grâce à la commande AWK
 LC_NUMERIC=C awk -F';' 'NR>1{
     id = $1
     nb_km = $5
@@ -15,6 +18,7 @@ LC_NUMERIC=C awk -F';' 'NR>1{
     }
 }' $fichier |sort -t';' -k2,2nr -g | head -n 10 |sort -t';' -k1,1nr > "$fichierdeSortie" 
 
+# Construction du graphique du traitement avec gnuplot 
 gnuplot <<- EOF
     reset
     set terminal pngcairo size 1280,720
@@ -33,10 +37,12 @@ gnuplot <<- EOF
     plot 'temp/tmp_l.csv' using 2:xtic(1) notitle with boxes
 EOF
 
-
+# Affichage du temps d'éxécution
 fin=$(date +%s)
 duree=$(( $fin - $debut ))
 echo "Temps d'exécution : $duree secondes"
+
+# Affichage du graphique
 xdg-open images/l.png # ouverture du png qui contient le graphique
 
 exit 0
