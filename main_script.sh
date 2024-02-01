@@ -2,7 +2,7 @@
 
 executable_parent="progc/src"
 
-executables=("noEnter" "main_s")
+executables=("noEnter" "main_s" "main_t")
 
 
 for executable in "${executables[@]}"; do
