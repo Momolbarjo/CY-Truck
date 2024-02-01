@@ -1,10 +1,13 @@
 #!/bin/bash
 
+# Début de la mesure du temps d'éxécution
 debut=$(date +%s)
+
+# Affectations des arguments
 sortie=temp/data_t1.csv
 fichier=$1
 
-
+# Traitement de date.csv avec AWK
 awk -F';' '{
 	id_trajet=$1
 	id_etape=$2
@@ -33,13 +36,15 @@ awk -F';' '{
 	 
 	}' $fichier >"temp/t1.csv"
 
-
+# Exécution du programme en C utilisant le fichier créé précédemment par le AWK
 progc/src/./main_t > "temp/data_t1.csv"
 
+# Verification du fichier de sortie
 if [ ! -f $sortie ];then
 	exit 1
 fi
 
+# Création du graphique du traitement
 gnuplot <<- EOF
     reset
     set terminal pngcairo size 1280,720
@@ -61,11 +66,13 @@ gnuplot <<- EOF
      "" using 3 lt rgb "#BDBDBD" title 'Premiere Ville '
 EOF
 
-
+# Fin et affichage du chronomètre
 fin=$(date +%s)
 duree=$(( $fin - $debut ))
 
 echo "Temps d'exécution : $duree secondes"
+
+# Affichage du graphique
 xdg-open images/t.png
 
 exit 0
