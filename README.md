@@ -40,7 +40,7 @@ Pour vous authentifier, exécutez :
 bash others/authorization/auto.sh
 ```
 
-Une fenêtre Zenity s'ouvrira, vous demandant d'appuyer sur une touche pour continuer. Ensuite, une fenêtre d'authentification apparaît pour entrer les informations suivantes :
+Une fenetre s'ouvrira vous demandant d'appuyer sur une touche pour continuer. Ensuite, une fenêtre d'authentification apparaîtra pour entrer les informations suivantes :
 - **Nom d'utilisateur** : admin
 - **Mot de passe** : miaou
 
