@@ -1,5 +1,6 @@
 #include "all.h"
 
+// main du programme C du traitement -t
 int main(void){
 	pAvl_t villeAVL = NULL;
 	int c = 0;
