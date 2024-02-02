@@ -29,7 +29,11 @@ Pour démarrer le programme, exécutez :
 ```
 bash main_script 'nomdevotrefichier.csv' [options]
 ```
-
+Par exemple:
+```
+bash main_script data.csv -d1
+```
+(Vous pouvez effectuer tout les traitements à la fois mais pensez à reduire les images quand elles s'ouvrent pour que le programme continue de d'executer)
 
 ### Authentification avec Zenity
 À la première utilisation, une procédure d'authentification est requise. CY-TRUCK utilise **Zenity** facilitant l'entrée sécurisée des informations d'authentification.
