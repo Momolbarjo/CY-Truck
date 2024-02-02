@@ -4,11 +4,11 @@
 CY-TRUCK est un programme en shell, GNUplot, et en C qui permet de générer divers graphiques à partir de données contenues dans un fichier CSV. Ce projet à  pour but de présenter des informations sur les performances des conducteurs, les trajets les plus longs, et les villes les plus traversées, entre autres.
 
 ## Fonctionnalités
-- **-d1**: Affiche les 10 premiers conducteurs avec le plus de trajets.
-- **-d2**: Affiche les 10 premiers conducteurs avec la plus grande distance parcourue.
-- **-l**: Montre les 10 trajets les plus longs.
-- **-t**: Liste les 10 villes les plus traversées.
-- **-s**: Génère des statistiques sur les étapes.
+- **-d1**: Affiche les 10 premiers conducteurs avec le plus de trajets. (3 à 7 secondes)
+- **-d2**: Affiche les 10 premiers conducteurs avec la plus grande distance parcourue. (3 à 6 secondes)
+- **-l**: Montre les 10 trajets les plus longs. (4 à 6 secondes)
+- **-t**: Liste les 10 villes les plus traversées. (16 à 23 secondes)
+- **-s**: Génère des statistiques sur les étapes. (9 à 15 secondes)
 - **-h**: Affiche l'aide, expliquant les options disponibles.
 - **Options Bonus**:
   - **-r**: Retire les droits sur le script principal, nécessitant une ré-authentification.
