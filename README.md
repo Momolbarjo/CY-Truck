@@ -12,7 +12,7 @@ CY-TRUCK est un programme en shell, GNUplot, et en C qui permet de générer div
 - **-h**: Affiche l'aide, expliquant les options disponibles.
 - **Options Bonus**:
   - **-r**: Retire les droits sur le script principal, nécessitant une ré-authentification.
-  - 
+    
 De plus, nos divers programmes Gnuplot s'ajustent en fonction de votre quantité de données dans l'optique de vous fournir un graphique parfaitement adapté, évitant ainsi tout problème de sous-zoom ou de surzoom.
 
 ## Prérequis
