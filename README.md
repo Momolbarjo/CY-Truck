@@ -35,7 +35,7 @@ Par exemple:
 ```
 bash main_script data.csv -d1
 ```
-(Vous pouvez effectuer tout les traitements à la fois mais pensez à reduire les images quand elles s'ouvrent pour que le programme continue de d'executer)
+(Vous pouvez effectuer tout les traitements à la fois mais pensez à reduire les images quand elles s'ouvrent pour que le programme continue de s'executer)
 
 
 ### Authentification avec Zenity
